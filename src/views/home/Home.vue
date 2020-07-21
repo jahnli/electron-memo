@@ -33,12 +33,33 @@
       </a-list-item>
     </a-list>
     <a-modal
+            class="modal-area"
             title="Title"
+            okText="确定"
+            :maskClosable="false"
+            cancelText="取消"
             :visible="modalVisible"
             :confirm-loading="confirmLoading"
             @ok="updateHandle"
+            @cancel="modalVisible = false"
     >
-      <p>我</p>
+      <a-form-model  :model="memoForm" labelAlign="left" :label-col="{span:6}" :wrapper-col="{ span: 12}">
+        <a-form-model-item label="名称"><a-input placeholder="请输入便签名称" v-model="memoForm.name" /></a-form-model-item>
+        <a-form-model-item label="类型">
+          <a-select v-model="memoForm.region" placeholder="请选择类型">
+            <a-select-option v-for="item in types" :value="item.value" :key="item.value">{{item.label}}</a-select-option>
+          </a-select>
+        </a-form-model-item>
+        <a-form-model-item label="时间提醒">
+          <a-date-picker
+                  v-model="memoForm.date1"
+                  show-time
+                  type="date"
+                  placeholder="选择时间提醒"
+                  style="width: 100%;"
+          />
+        </a-form-model-item>
+      </a-form-model>
     </a-modal>
   </div>
 </template>
@@ -48,6 +69,22 @@
     name: "Home",
     data() {
       return {
+        // 表单
+        memoForm: {
+          name: '',
+          type: 'work',
+          date1: undefined,
+          delivery: false,
+          resource: '',
+          desc: '',
+        },
+        // select
+        types:[
+          {label:'工作',value:'work'},
+          {label:'生活',value:'life'},
+          {label:'娱乐',value:'play'},
+          {label:'其他',value:'rest'},
+        ],
         // 确定按钮loading
         confirmLoading:false,
         data:[
@@ -92,6 +129,16 @@
           font-size: 16px;
           color: #333;
         }
+      }
+    }
+  }
+  .modal-area{
+    .ant-modal-body{
+      height: 300px;
+      overflow: auto;
+      .base-scroll-bar(6px,0);
+      .ant-form-item-label{
+        line-height: 39.9999px;
       }
     }
   }

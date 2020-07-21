@@ -6,19 +6,18 @@
   </div>
 </template>
 <style lang="less">
+  html,body{
+    .base-scroll-bar(8px,0);
+  }
   #app{
     .router-view{
       padding:0 20px;
       width: 100%;
       height:calc(~'100% - 110px');
       position: absolute;
-      .base-scroll-bar(8px,0);
-      overflow:hidden;
+      .base-scroll-bar(6px,0);
+      overflow:auto;
       top: 60px;
-      &:hover{
-        overflow:auto;
-        padding-right: 12px;
-      }
     }
     .header-area,.footer-area{
       width: 100%;
