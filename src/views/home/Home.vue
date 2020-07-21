@@ -5,7 +5,7 @@
             :data-source="data"
     >
       <a-list-item class="memo-list-item" slot="renderItem" slot-scope="item,index">
-        <a slot="actions"><a-icon type="edit" /></a>
+        <a slot="actions"><a-icon @click="editHandle(item)" type="edit" /></a>
         <a slot="actions">
           <a-popconfirm
                   title="确定删除 ?"
@@ -52,6 +52,18 @@
 
     },
     methods: {
+      editHandle(item){
+        this.$confirm({
+          title: 'Do you want to delete these items?',
+          content: 'When clicked the OK button, this dialog will be closed after 1 second',
+          onOk() {
+            return new Promise((resolve, reject) => {
+              setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
+            }).catch(() => console.log('Oops errors!'));
+          },
+          onCancel() {},
+        });
+      },
       // 删除操作
       deleteHandle(item){
         console.log(item);
