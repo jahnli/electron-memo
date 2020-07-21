@@ -10,10 +10,15 @@
     .router-view{
       padding:0 20px;
       width: 100%;
-      overflow: auto;
       height:calc(~'100% - 110px');
       position: absolute;
+      .base-scroll-bar(8px,0);
+      overflow:hidden;
       top: 60px;
+      &:hover{
+        overflow:auto;
+        padding-right: 12px;
+      }
     }
     .header-area,.footer-area{
       width: 100%;

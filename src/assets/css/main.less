@@ -1,0 +1,14 @@
+// 滚动条
+.base-scroll-bar(@width:0,@height:0){
+  &::-webkit-scrollbar {
+    height:@height;
+    width:@width;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 6px;
+    background-color: rgba(144,147,153,.25);
+  }
+  &::-webkit-scrollbar-track {
+    border-radius: 6px;
+  }
+}

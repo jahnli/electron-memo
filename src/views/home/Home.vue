@@ -10,6 +10,7 @@
           <a-popconfirm
                   title="确定删除 ?"
                   ok-text="确定"
+                  placement="left"
                   cancel-text="取消"
                   @confirm="deleteHandle(item)"
           >
@@ -31,6 +32,14 @@
         </a-list-item-meta>
       </a-list-item>
     </a-list>
+    <a-modal
+            title="Title"
+            :visible="modalVisible"
+            :confirm-loading="confirmLoading"
+            @ok="updateHandle"
+    >
+      <p>我</p>
+    </a-modal>
   </div>
 </template>
 
@@ -39,30 +48,33 @@
     name: "Home",
     data() {
       return {
+        // 确定按钮loading
+        confirmLoading:false,
         data:[
           {title: '罗永浩直播',category:'直播',timestamp:1595311164000,},
           {title: '李佳琦直播',category:'直播',timestamp:1595314164000,},
           {title: '向往的生活',category:'综艺',timestamp:1545311264000,},
           {title: '极限挑战',category:'综艺',timestamp:1595314264000,},
           {title: '薇娅直播',category:'直播',timestamp:1591212364000,},
-        ]
+          {title: '薇娅直播',category:'直播',timestamp:1591212364000,},
+          {title: '薇娅直播',category:'直播',timestamp:1591212364000,},
+          {title: '薇娅直播',category:'直播',timestamp:1591212364000,},
+        ],
+        // modal显示
+        modalVisible:false
       }
     },
     mounted() {
 
     },
     methods: {
+      // 更新操作
+      updateHandle(){
+
+      },
+      // 编辑
       editHandle(item){
-        this.$confirm({
-          title: 'Do you want to delete these items?',
-          content: 'When clicked the OK button, this dialog will be closed after 1 second',
-          onOk() {
-            return new Promise((resolve, reject) => {
-              setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
-            }).catch(() => console.log('Oops errors!'));
-          },
-          onCancel() {},
-        });
+        this.modalVisible = true;
       },
       // 删除操作
       deleteHandle(item){
