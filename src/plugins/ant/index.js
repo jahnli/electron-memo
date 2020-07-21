@@ -1,10 +1,10 @@
 import Vue from 'vue'
 import {
   message,
-  Button,Col,Row,Icon,Select,InputNumber,Statistic,DatePicker,TimePicker,Modal
+  Button,Col,Row,Icon,Select,InputNumber,Statistic,DatePicker,TimePicker,Modal,List,Avatar,Divider,Popconfirm
 } from 'ant-design-vue';
 const components = {
-  Button,Col,Row,Icon,Select,InputNumber,Statistic,DatePicker,TimePicker
+  Button,Col,Row,Icon,Select,InputNumber,Statistic,DatePicker,TimePicker,Modal,List,Avatar,Divider,Popconfirm
 };
 message.config({
   maxCount: 3,

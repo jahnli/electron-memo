@@ -14,13 +14,14 @@ protocol.registerSchemesAsPrivileged([
 function createWindow() {
   // Create the browser window.
   win = new BrowserWindow({
-    width: 800,
-    height: 600,
+    minWidth:390,
+    minHeight:400,
+    width:390,
+    height:710,
     webPreferences: {
       nodeIntegration: true
     }
   })
-
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     win.loadURL(process.env.WEBPACK_DEV_SERVER_URL)
     if (!process.env.IS_TEST) win.webContents.openDevTools()
