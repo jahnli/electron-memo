@@ -1,10 +1,25 @@
 <template>
   <div id="app">
-    <div class="header-area">备忘录</div>
-    <router-view class="router-view"/>
+    <div class="header-area" @click="toogle">备忘录</div>
+    <router-view :class="{'no-show':!show}" v-if="show" class="router-view"/>
     <div class="footer-area"></div>
   </div>
 </template>
+<script>
+  export default {
+    data(){
+      return{
+        show:true
+      }
+    },
+    methods:{
+      toogle(){
+        this.show = !this.show
+        this.$electron.ipcRenderer.send('setMainWin')
+      }
+    }
+  }
+</script>
 <style lang="less">
   html,body{
     .base-scroll-bar(8px,0);
@@ -18,6 +33,9 @@
       .base-scroll-bar(6px,0);
       overflow:auto;
       top: 60px;
+    }
+    .no-show{
+      height: 0;
     }
     .header-area,.footer-area{
       width: 100%;
@@ -33,7 +51,7 @@
       border-bottom: 1px solid #d9d9d9;
     }
     .footer-area{
-      height: 50px;
+      height: 40px;
       bottom: 0;
       border-top: 1px solid #d9d9d9;
     }

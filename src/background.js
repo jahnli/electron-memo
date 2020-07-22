@@ -5,7 +5,7 @@ import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
-let win
+let win;
 
 protocol.registerSchemesAsPrivileged([
   { scheme: 'app', privileges: { secure: true, standard: true } }
@@ -15,13 +15,17 @@ function createWindow() {
   // Create the browser window.
   win = new BrowserWindow({
     minWidth:390,
-    minHeight:400,
     width:390,
+    minHeight:110,
     height:710,
     webPreferences: {
       nodeIntegration: true
     }
   })
+
+  //
+  require('./main-process/ipcMain');
+
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     win.loadURL(process.env.WEBPACK_DEV_SERVER_URL)
     if (!process.env.IS_TEST) win.webContents.openDevTools()
