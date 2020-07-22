@@ -10,6 +10,7 @@ Vue.config.productionTip = false;
 // 时间格式化
 const diffYear = new Date().getFullYear();
 import moment from 'moment';
+Vue.prototype.$moment = moment;
 // 中文简体
 moment.locale('zh-cn');
 Vue.filter('dateformat', (val, pattern = 'YYYY-MM-DD HH:mm:ss',filter = false) =>{

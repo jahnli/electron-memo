@@ -33,29 +33,37 @@
       </a-list-item>
     </a-list>
     <a-modal
+            destroyOnClose
             class="modal-area"
-            title="Title"
+            title="添加便签"
             okText="确定"
             :maskClosable="false"
             cancelText="取消"
             :visible="modalVisible"
             :confirm-loading="confirmLoading"
             @ok="updateHandle"
-            @cancel="modalVisible = false"
+            @cancel="onCancel"
     >
-      <a-form-model  :model="memoForm" labelAlign="left" :label-col="{span:6}" :wrapper-col="{ span: 12}">
-        <a-form-model-item label="名称"><a-input placeholder="请输入便签名称" v-model="memoForm.name" /></a-form-model-item>
-        <a-form-model-item label="类型">
-          <a-select v-model="memoForm.region" placeholder="请选择类型">
+      <a-form-model
+              :model="memoForm"
+              labelAlign="left"
+              :label-col="{span:6}"
+              :wrapper-col="{ span: 12}"
+              ref="memoFormRef"
+      >
+        <a-form-model-item  prop="title" label="名称"><a-input placeholder="便签名称" v-model="memoForm.title" /></a-form-model-item>
+        <a-form-model-item  prop="type" label="类型">
+          <a-select v-model="memoForm.type" placeholder="类型">
             <a-select-option v-for="item in types" :value="item.value" :key="item.value">{{item.label}}</a-select-option>
           </a-select>
         </a-form-model-item>
-        <a-form-model-item label="时间提醒">
+        <a-form-model-item prop="timestamp" label="时间提醒">
           <a-date-picker
-                  v-model="memoForm.date1"
+                  v-model="memoForm.timestamp"
                   show-time
                   type="date"
-                  placeholder="选择时间提醒"
+                  valueFormat="x"
+                  placeholder="时间提醒"
                   style="width: 100%;"
           />
         </a-form-model-item>
@@ -71,12 +79,9 @@
       return {
         // 表单
         memoForm: {
-          name: '',
+          title: '',
           type: 'work',
-          date1: undefined,
-          delivery: false,
-          resource: '',
-          desc: '',
+          timestamp: undefined,
         },
         // select
         types:[
@@ -88,12 +93,12 @@
         // 确定按钮loading
         confirmLoading:false,
         data:[
-          {title: '罗永浩直播',category:'直播',timestamp:1595311164000,},
-          {title: '李佳琦直播',category:'直播',timestamp:1595314164000,},
-          {title: '向往的生活',category:'综艺',timestamp:1545311264000,},
-          {title: '极限挑战',category:'综艺',timestamp:1595314264000,},
-          {title: '薇娅直播',category:'直播',timestamp:1591212364000,},
-          {title: '薇娅直播',category:'直播',timestamp:1591212364000,},
+          {title: '罗永浩直播',type:'直播',timestamp:1595311164000,},
+          {title: '李佳琦直播',type:'直播',timestamp:1595314164000,},
+          {title: '向往的生活',type:'综艺',timestamp:1545311264000,},
+          {title: '极限挑战',type:'综艺',timestamp:1595314264000,},
+          {title: '薇娅直播',type:'直播',timestamp:1591212364000,},
+          {title: '薇娅直播',type:'直播',timestamp:1591212364000,},
           {title: '薇娅直播',category:'直播',timestamp:1591212364000,},
           {title: '薇娅直播',category:'直播',timestamp:1591212364000,},
         ],
@@ -109,9 +114,15 @@
       updateHandle(){
 
       },
+      onCancel(){
+        this.modalVisible = false;
+        this.memoForm = {}
+      },
       // 编辑
       editHandle(item){
         this.modalVisible = true;
+        let temp = JSON.stringify({...item,timestamp:this.$moment(item.timestamp).format('x')});
+        this.memoForm = JSON.parse(temp);
       },
       // 删除操作
       deleteHandle(item){
