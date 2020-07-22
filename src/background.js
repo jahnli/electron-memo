@@ -11,12 +11,15 @@ protocol.registerSchemesAsPrivileged([
   { scheme: 'app', privileges: { secure: true, standard: true } }
 ])
 
+// 登录 [700,400]
+// 主页面 [360,710]
+// 缩放 [360,120]
 function createWindow() {
   win = new BrowserWindow({
-    minWidth:390,
-    width:390,
-    minHeight:110,
-    height:710,
+    minWidth:360,
+    minHeight:120,
+    width:700,
+    height:400,
     frame:false,
     useContentSize:true,
     webPreferences: {
