@@ -1,3 +1,16 @@
+
+// 禁止拖拽
+.no-drag{
+  -webkit-app-region: no-drag;
+}
+
+// flex  对齐方式
+.flex(@justify: flex-start, @align:stretch){
+  display: flex;
+  justify-content:@justify;
+  align-items:@align ;
+}
+
 // 滚动条
 .base-scroll-bar(@width:0,@height:0){
   &::-webkit-scrollbar {
