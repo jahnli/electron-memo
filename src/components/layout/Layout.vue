@@ -5,8 +5,8 @@
     </div>
     <div class="header-area">备忘录</div>
     <router-view class="router-view"/>
-    <div class="footer-area drag">
-
+    <div class="footer-area">
+      <div class="drag" style="width:100%;height: 100%"></div>
     </div>
   </div>
 </template>
