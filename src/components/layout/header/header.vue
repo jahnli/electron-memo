@@ -6,9 +6,9 @@
       <a-badge dot><a-icon style="font-size: 15px" type="notification" /></a-badge>
     </section>
     <section class="layout-header-right">
-      <a-icon style="font-size: 18px"   type="up-square" />
-      <a-icon class="minus-icon" style="font-size: 18px"  type="minus-square" />
-      <a-icon style="font-size: 18px"  type="close-square" />
+      <a-icon @click.native="handle('collapse')" class="handle-icon no-drag" style="font-size: 18px"   type="up-square" />
+      <a-icon @click.native="handle('min')" class="minus-icon handle-icon no-drag" style="font-size: 18px"  type="minus-square" />
+      <a-icon @click.native="handle('close')" class="handle-icon no-drag" style="font-size: 18px"  type="close-square" />
     </section>
   </div>
 </template>
@@ -22,7 +22,11 @@
     mounted() {
 
     },
-    methods: {}
+    methods: {
+      handle(type){
+        this.$electron.ipcRenderer.send(type);
+      }
+    }
   }
 </script>
 
@@ -38,6 +42,9 @@
     .title{
       font-size: 16px;
       margin: 0 16px 0 10px;
+    }
+    .handle-icon{
+      cursor: pointer;
     }
     .minus-icon{
       margin: 0 10px;

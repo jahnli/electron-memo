@@ -18,6 +18,7 @@ function createWindow() {
     minHeight:110,
     height:710,
     frame:false,
+    useContentSize:true,
     webPreferences: {
       nodeIntegration: true
     }
@@ -25,6 +26,7 @@ function createWindow() {
 
   //
   require('./main-process/ipcMain');
+  require('./main-process/tray');
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     win.loadURL(process.env.WEBPACK_DEV_SERVER_URL)
