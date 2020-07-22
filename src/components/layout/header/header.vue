@@ -6,7 +6,7 @@
       <a-badge dot><a-icon style="font-size: 15px" type="notification" /></a-badge>
     </section>
     <section class="layout-header-right">
-      <a-icon @click.native="handle('collapse')" class="handle-icon no-drag" style="font-size: 18px"   type="up-square" />
+      <a-icon @click.native="resetSize" class="handle-icon no-drag" style="font-size: 18px"   type="up-square" />
       <a-icon @click.native="handle('min')" class="minus-icon handle-icon no-drag" style="font-size: 18px"  type="minus-square" />
       <a-icon @click.native="handle('close')" class="handle-icon no-drag" style="font-size: 18px"  type="close-square" />
     </section>
@@ -23,6 +23,17 @@
 
     },
     methods: {
+      // 重置窗口
+      resetSize(){
+        let bounds = this.$electron.remote.getCurrentWindow().getBounds();
+        let {height} = bounds;
+        if(height == 710){
+          bounds = {...bounds,height:120}
+        }else{
+          bounds = {...bounds,height:710}
+        }
+        this.$electron.ipcRenderer.send('setMainWin',bounds)
+      },
       handle(type){
         this.$electron.ipcRenderer.send(type);
       }

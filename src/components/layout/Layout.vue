@@ -5,7 +5,9 @@
     </div>
     <div class="header-area">备忘录</div>
     <router-view class="router-view"/>
-    <div class="footer-area"></div>
+    <div class="footer-area drag">
+
+    </div>
   </div>
 </template>
 
@@ -44,7 +46,6 @@
       width: 100%;
       position: fixed;
       background-color: #FFFFFF;
-      -webkit-app-region: drag;
     }
     .header-area{
       display: flex;
