@@ -6,14 +6,15 @@
       <a-badge dot><a-icon style="font-size: 15px" type="notification" /></a-badge>
     </section>
     <section class="layout-header-right no-darg">
-      <a-icon @click.native="resetSize" class="handle-icon no-drag" style="font-size: 18px"   :type="isCollapsed ? 'down-square':'up-square'" />
-      <a-icon @click.native="handle('min')" class="minus-icon handle-icon no-drag" style="font-size: 18px"  type="minus-square" />
-      <a-icon @click.native="handle('close')" class="handle-icon no-drag" style="font-size: 18px"  type="close-square" />
+      <BaseIcon @click.native="resetSize" class="handle-icon"  :type="isCollapsed ? 'iconunfold':'iconfold'" ></BaseIcon>
+      <BaseIcon @click.native="handle('min')" class="handle-icon minus-icon"  type="iconmove" ></BaseIcon>
+      <BaseIcon @click.native="handle('close')" class="handle-icon"  type="iconclose" ></BaseIcon>
     </section>
   </div>
 </template>
 
 <script>
+  import BaseIcon from '@/components/icon/icon';
   export default {
     name: "layout-header",
     data() {
@@ -41,7 +42,8 @@
       handle(type){
         this.$electron.ipcRenderer.send(type);
       }
-    }
+    },
+    components:{BaseIcon}
   }
 </script>
 
@@ -59,6 +61,7 @@
     }
     .handle-icon{
       cursor: pointer;
+      font-size: 18px;
     }
     .minus-icon{
       margin: 0 10px;

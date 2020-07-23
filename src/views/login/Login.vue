@@ -5,8 +5,12 @@
         <img width="100%" height="100%" src="../../assets/login-bg.jpg" alt="">
       </a-col>
       <a-col class="login-area" :span="13" @mousedown="mousedown" @mouseup="mouseup">
+        <div class="handle-area">
+          <BaseIcon @click.native="handle('min')" type="iconmove" class="icon-handle "></BaseIcon>
+          <BaseIcon @click.native="handle('close')"  type="iconclose" class="icon-handle "></BaseIcon>
+        </div>
         <a-form-model :model="loginForm">
-          <a-form-model-item class="no-drag"><a-input placeholder="用户名" v-model="loginForm.userName" /></a-form-model-item>
+            <a-form-model-item class="no-drag"><a-input autoFocus placeholder="用户名" v-model="loginForm.userName" /></a-form-model-item>
           <a-form-model-item class="no-drag" ><a-input placeholder="密码" v-model="loginForm.psw" /></a-form-model-item>
           <a-form-model-item class="no-drag">
             <a-checkbox-group v-model="loginForm.type">
@@ -26,7 +30,7 @@
 
 <script>
   import {mouseup,mousedown} from "../../renderer-process/renderer-process";
-
+  import BaseIcon from '@/components/icon/icon'
   export default {
     name: "Login",
     data() {
@@ -62,9 +66,13 @@
         };
         this.$electron.ipcRenderer.send('setMainWin',bounds)
       },
+      handle(type){
+        this.$electron.ipcRenderer.send(type);
+      },
       mouseup,
       mousedown:(e)=>mousedown(e),
-    }
+    },
+    components:{BaseIcon}
   }
 </script>
 
@@ -74,6 +82,7 @@
       height: 100%;
     }
     .login-area{
+      position: relative;
       .flex(center,center);
       .register-area{
         position: absolute;
@@ -81,6 +90,16 @@
         cursor: pointer;
         bottom: 20px;
         color: gray;
+      }
+    }
+    .handle-area{
+      position: absolute;
+      right: 15px;
+      top: 15px;
+      .icon-handle{
+        font-size: 18px;
+        margin-left: 10px;
+        cursor: pointer;
       }
     }
   }
