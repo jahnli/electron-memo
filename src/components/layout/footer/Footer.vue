@@ -35,10 +35,12 @@
             <a-button type="primary">添加</a-button>
           </a-form-model-item>
         </a-form-model>
-        <a-icon type="plus" class="add-icon" />
+        <a-icon style="font-size: 18px"  type="plus" class="add-icon" />
       </a-popover>
     </section>
-    <section class="footer-right"></section>
+    <section class="footer-right">
+      <a-icon type="setting" style="font-size: 18px" class="setting-icon" />
+    </section>
   </div>
 </template>
 
@@ -92,6 +94,9 @@
     padding: 0 20px;
     .flex(space-between,center);
     .add-icon{
+      cursor: pointer;
+    }
+    .setting-icon{
       cursor: pointer;
     }
   }
