@@ -1,10 +1,10 @@
 <template>
   <div class='Layout'>
     <div class="system-bar" @mousedown.prevent="mousedown" @mouseup.prevent="mouseup">
-      <LayoutHeader></LayoutHeader>
+      <LayoutHeader @collapseChange="collapseChange"></LayoutHeader>
     </div>
     <div class="header-area" @mousedown.prevent="mousedown" @mouseup.prevent="mouseup">备忘录</div>
-    <router-view class="router-view"/>
+    <router-view  :class="{'no-show':isCollapsed}"  v-show="!isCollapsed" class="router-view"/>
     <div class="footer-area" @mousedown.prevent="mousedown" @mouseup.prevent="mouseup">
     </div>
   </div>
@@ -17,7 +17,7 @@
     name: "Layout",
     data() {
       return {
-        show:true
+        isCollapsed:false
       }
     },
     created() {
@@ -27,6 +27,9 @@
 
     },
     methods: {
+      collapseChange(isCollapsed){
+        this.isCollapsed = isCollapsed;
+      },
       mouseup,
       mousedown:(e)=>mousedown(e),
     },
