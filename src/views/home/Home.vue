@@ -74,6 +74,7 @@
 </template>
 
 <script>
+
   export default {
     name: "Home",
     data() {
@@ -142,7 +143,7 @@
           height:710
         };
         this.$electron.ipcRenderer.send('setMainWin',bounds)
-      }
+      },
     }
   }
 </script>

@@ -1,18 +1,18 @@
 <template>
   <div class='Layout'>
-    <div class="system-bar">
+    <div class="system-bar" @mousedown.prevent="mousedown" @mouseup.prevent="mouseup">
       <LayoutHeader></LayoutHeader>
     </div>
-    <div class="header-area">备忘录</div>
+    <div class="header-area" @mousedown.prevent="mousedown" @mouseup.prevent="mouseup">备忘录</div>
     <router-view class="router-view"/>
-    <div class="footer-area">
-      <div class="drag" style="width:100%;height: 100%"></div>
+    <div class="footer-area" @mousedown.prevent="mousedown" @mouseup.prevent="mouseup">
     </div>
   </div>
 </template>
 
 <script>
   import LayoutHeader from '@/components/layout/header/header.vue'
+  import {mousedown, mouseup} from "../../renderer-process/renderer-process";
   export default {
     name: "Layout",
     data() {
@@ -20,10 +20,16 @@
         show:true
       }
     },
+    created() {
+      this.$electron.remote.getCurrentWindow().resizable = true;
+    },
     mounted() {
 
     },
-    methods: {},
+    methods: {
+      mouseup,
+      mousedown:(e)=>mousedown(e),
+    },
     components:{LayoutHeader}
   }
 </script>

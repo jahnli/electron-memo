@@ -5,7 +5,7 @@ export const mouseup = () =>{
 }
 
 export const mousedown = (e) =>{
-  if (e.target instanceof HTMLInputElement || e.target instanceof HTMLButtonElement || e.target instanceof HTMLTextAreaElement || e.target.className.includes('no-drag')
+  if (e.target instanceof HTMLInputElement || e.target instanceof HTMLButtonElement || e.target instanceof HTMLTextAreaElement || typeof e.target.className == 'object' || e.target.className.includes('no-drag')
   ) {
     ipcRenderer.send("window-move-open", false)
     return ;

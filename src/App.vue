@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <router-view class="router-view"></router-view>
+    <router-view class="router-main"></router-view>
   </div>
 </template>
 <script>
@@ -19,7 +19,7 @@
   html,body{
     .base-scroll-bar(8px,0);
   }
-  #app,.router-view{
+  #app,.router-main{
     height: 100%;
   }
 </style>
