@@ -5,10 +5,12 @@ import router from '../router/index';
 app.whenReady().then(()=>{
   // 托盘退出登录
   ipcRenderer.on('home',function () {
-    if(router.currentRoute.name !== 'login'){
+    let currentRoute = router.currentRoute;
+    if(currentRoute.name !== 'login'){
       router.push({path:'/login'})
     }
   })
+
 })
 
 export const mouseup = () =>{

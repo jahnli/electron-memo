@@ -132,7 +132,7 @@
       deleteHandle(item){
         console.log(item);
       },
-      // 重置窗口
+      // 初始化窗口，托盘
       resetSize(){
         let screen = this.$electron.remote.screen.getPrimaryDisplay().workAreaSize;
         const bounds = {
@@ -143,6 +143,7 @@
           height:710
         };
         this.$electron.ipcRenderer.send('setMainWin',bounds)
+        this.$electron.ipcRenderer.send('changeTray',true)
       },
     }
   }

@@ -64,7 +64,8 @@
           width:700,
           height:400
         };
-        this.$electron.ipcRenderer.send('setMainWin',bounds)
+        this.$electron.ipcRenderer.send('setMainWin',bounds);
+        this.$electron.ipcRenderer.send('changeTray',false)
       },
       handle(type){
         this.$electron.ipcRenderer.send(type);
