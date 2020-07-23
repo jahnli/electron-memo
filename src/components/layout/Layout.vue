@@ -6,12 +6,14 @@
     <div class="header-area" @mousedown.prevent="mousedown" @mouseup.prevent="mouseup">备忘录</div>
     <router-view  :class="{'no-show':isCollapsed}"  v-show="!isCollapsed" class="router-view"/>
     <div class="footer-area" @mousedown.prevent="mousedown" @mouseup.prevent="mouseup">
+      <LayoutFooter></LayoutFooter>
     </div>
   </div>
 </template>
 
 <script>
   import LayoutHeader from '@/components/layout/header/header.vue'
+  import LayoutFooter from '@/components/layout/footer/Footer.vue'
   import {mousedown, mouseup} from "../../renderer-process/renderer-process";
   export default {
     name: "Layout",
@@ -33,7 +35,7 @@
       mouseup,
       mousedown:(e)=>mousedown(e),
     },
-    components:{LayoutHeader}
+    components:{LayoutHeader,LayoutFooter}
   }
 </script>
 
