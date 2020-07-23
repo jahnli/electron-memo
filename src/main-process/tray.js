@@ -11,7 +11,12 @@ app.whenReady().then(() => {
     {label: '设置'},
     {type:'separator'},
     {label: '最小化'},
-    {label: '退出登录'},
+    {
+      label: '退出登录',
+      click:()=>{
+        win.webContents.send('home');
+      }
+    },
     {
       label: '退出程序',
       click: () => {

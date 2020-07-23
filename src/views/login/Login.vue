@@ -10,7 +10,7 @@
           <BaseIcon @click.native="handle('close')"  type="iconclose" class="icon-handle "></BaseIcon>
         </div>
         <a-form-model :model="loginForm">
-            <a-form-model-item class="no-drag"><a-input autoFocus placeholder="用户名" v-model="loginForm.userName" /></a-form-model-item>
+            <a-form-model-item class="no-drag"><a-input  placeholder="用户名" v-model="loginForm.userName" /></a-form-model-item>
           <a-form-model-item class="no-drag" ><a-input placeholder="密码" v-model="loginForm.psw" /></a-form-model-item>
           <a-form-model-item class="no-drag">
             <a-checkbox-group v-model="loginForm.type">
