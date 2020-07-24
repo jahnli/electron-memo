@@ -37,14 +37,16 @@
         </a-form-model>
         <a-icon style="font-size: 18px"  type="plus" class="add-icon" />
       </a-popover>
+      <BaseIcon style="font-size: 18px" @click="openTools" class="icon tools-icon"  type="icongongju" ></BaseIcon>
     </section>
     <section class="footer-right">
-      <a-icon @click="openSetting" type="setting" style="font-size: 18px" class="setting-icon" />
+      <a-icon @click="openSetting" type="setting" style="font-size: 18px" class="icon" />
     </section>
   </div>
 </template>
 
 <script>
+  import BaseIcon from '@/components/icon/icon.js';
   const { BrowserWindow } = window.require('electron').remote;
   const path = require('path');
   export default {
@@ -78,40 +80,55 @@
           {title: '薇娅直播',category:'直播',timestamp:1591212364000,},
         ],
         // 窗口
-        secondWin:null
+        settingWin:null,
+        toolsWin:null,
       }
     },
     mounted() {
 
     },
     methods: {
-      // 打开设置
-      openSetting(){
-        if(this.secondWin){
+      // 打开更多工具
+      openTools(){
+        if(this.toolsWin){
           return
         }else{
-          this.secondWin = new BrowserWindow({
-            width:800,
-            height:500,
-            icon:path.join(__static + '/icon.png'),
-            useContentSize:true,
-            webPreferences: {
-              nodeIntegration: true
-            },
-            resizable:false
-          })
-          this.secondWin.setMenu(null);
-          this.secondWin.loadURL('http://localhost:8080/#/setting')
-          this.secondWin.openDevTools();
-          this.secondWin.on('closed', () => {
-            this.secondWin = null
-          })
+          this.createWin('toolsWin','更多工具','tools')
         }
+      },
+      // 打开设置
+      openSetting(){
+        if(this.settingWin){
+          return
+        }else{
+          this.createWin('settingWin','软件设置','setting')
+        }
+      },
+      // 创建窗口
+      createWin(field,title = '便签',routerPath){
+        this[field] = new BrowserWindow({
+          width:800,
+          height:500,
+          title:title,
+          icon:path.join(__static + '/icon.png'),
+          useContentSize:true,
+          webPreferences: {
+            nodeIntegration: true
+          },
+          resizable:false
+        })
+        this[field].setMenu(null);
+        this[field].loadURL(`http://localhost:8080/#/${routerPath}`)
+        this[field].openDevTools();
+        this[field].on('closed', () => {
+          this[field] = null
+        })
       },
       visibleChange(e){
 
       }
-    }
+    },
+    components:{BaseIcon}
   }
 </script>
 
@@ -123,8 +140,11 @@
     .add-icon{
       cursor: pointer;
     }
-    .setting-icon{
+    .icon{
       cursor: pointer;
+    }
+    .tools-icon{
+      margin-left: 20px;
     }
   }
 </style>
