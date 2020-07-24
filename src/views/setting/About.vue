@@ -1,7 +1,7 @@
 <template>
   <div class='about'>
     <h2>关于便签</h2>
-    <p>版本信号：1.1.2</p>
+    <p>版本信息：1.1.2</p>
     <p>开发者：Jahn</p>
     <a-tooltip>
       <template slot="title">掘金</template>
