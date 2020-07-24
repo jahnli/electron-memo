@@ -1,6 +1,5 @@
 <template>
    <div class='Home'>
-      <router-link to="/">我</router-link>
       <a-list
               class="memo-list"
               :data-source="data"
