@@ -25,7 +25,6 @@ app.whenReady().then(() => {
           {type:'separator'},
           {
             label: '锁定',
-            accelerator :'ctrl+l',
             click:()=>{
               win.webContents.send('routerSkip','lock');
               tray.setImage(path.join(__static,'icon-lock.png'))
