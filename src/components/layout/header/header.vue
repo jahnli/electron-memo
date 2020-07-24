@@ -1,7 +1,7 @@
 <template>
   <div class='layout-header'>
     <section class="layout-header-left no-darg">
-      <a-avatar :size="19"  style="backgroundColor:#87d068" icon="notification" />
+      <img src="../../../../public/icon.png" class="logo" alt="">
       <span class="title">便签</span>
       <a-badge dot><a-icon style="font-size: 15px" type="notification" /></a-badge>
     </section>
@@ -54,6 +54,9 @@
     height: 40px;
     .layout-header-left,.layout-header-right{
       .flex(flex-start,center);
+    }
+    .logo{
+      width: 20px;
     }
     .title{
       font-size: 16px;
