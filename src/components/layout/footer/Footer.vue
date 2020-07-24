@@ -91,8 +91,8 @@
           return
         }else{
           this.secondWin = new BrowserWindow({
-            width:700,
-            height:400,
+            width:800,
+            height:500,
             icon:path.join(__static + '/icon.png'),
             useContentSize:true,
             webPreferences: {
@@ -102,6 +102,7 @@
           })
           this.secondWin.setMenu(null);
           this.secondWin.loadURL('http://localhost:8080/#/setting')
+          this.secondWin.openDevTools();
           this.secondWin.on('closed', () => {
             this.secondWin = null
           })
