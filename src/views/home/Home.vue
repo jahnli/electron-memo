@@ -86,10 +86,10 @@
         },
         // select
         types:[
-          {label:'工作',value:'work'},
-          {label:'生活',value:'life'},
-          {label:'娱乐',value:'play'},
-          {label:'其他',value:'rest'},
+          {label:'工作提醒',value:'work'},
+          {label:'生活事项',value:'life'},
+          {label:'娱乐事项',value:'play'},
+          {label:'其他事项',value:'rest'},
         ],
         // 确定按钮loading
         confirmLoading:false,
