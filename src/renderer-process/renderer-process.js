@@ -10,18 +10,6 @@ app.whenReady().then(()=>{
       })
     }
   })
-  // if(currentRoute.name !== 'login'){
-  //   // 注册锁定快捷键
-  //   globalShortcut.register('ctrl+L', () => {
-  //     if(currentRoute.name !== 'lock'){
-  //       router.push({path:`/lock`})
-  //     }else{
-  //       router.go(-1);
-  //     }
-  //   })
-  // }else{
-  //   globalShortcut.unregister('ctrl+L')
-  // }
 })
 
 export const mouseup = () =>{

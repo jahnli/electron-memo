@@ -1,3 +1,5 @@
+import router from "../router";
+
 const {app,Menu, BrowserWindow ,Tray,ipcMain ,MenuItem}  = require('electron')
 const path = require('path');
 let tray;

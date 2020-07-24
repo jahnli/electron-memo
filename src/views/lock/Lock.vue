@@ -15,8 +15,7 @@
     name: "Lock",
     data() {
       return {
-        psw:'23232',
-        userName:'x'
+        psw:''
       }
     },
     mounted() {
