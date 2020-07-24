@@ -13,3 +13,4 @@ app.whenReady().then(() => {
   // 拖拽
   require('./darg');
 })
+

@@ -7,6 +7,20 @@ const electron = window.require('electron');
 Vue.prototype.$electron = electron;
 Vue.config.productionTip = false;
 
+
+// 监听Esc退出程序
+document.addEventListener('keyup',  (e) => {
+  if (e.keyCode == 27) {
+    let win = electron.remote.getCurrentWindow();
+    if(win.id == 1){
+      electron.remote.getCurrentWindow().hide();
+    }else{
+      electron.remote.getCurrentWindow().close();
+    }
+  }
+})
+
+
 // 时间格式化
 const diffYear = new Date().getFullYear();
 import moment from 'moment';
