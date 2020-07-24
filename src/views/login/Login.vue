@@ -53,6 +53,15 @@
         this.$router.push({
           path:'/home'
         })
+        let screen = this.$electron.remote.screen.getPrimaryDisplay().workAreaSize;
+        const bounds = {
+          // 减去宽度加上右边距
+          x:screen.width - 360 - 100,
+          y:150,
+          width:360,
+          height:710
+        };
+        this.$electron.ipcRenderer.send('setMainWin',bounds)
       },
       // 重置窗口
       resetSize(){

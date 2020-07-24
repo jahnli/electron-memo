@@ -1,76 +1,76 @@
 <template>
-  <div class='Home'>
-    <router-link to="/">我</router-link>
-    <a-list
-            class="memo-list"
-            :data-source="data"
-    >
-      <a-list-item class="memo-list-item" slot="renderItem" slot-scope="item,index">
-        <a slot="actions"><a-icon @click="editHandle(item)" type="edit" /></a>
-        <a slot="actions">
-          <a-popconfirm
-                  title="确定删除 ?"
-                  ok-text="确定"
-                  placement="left"
-                  cancel-text="取消"
-                  @confirm="deleteHandle(item)"
-          >
-            <a-icon theme="twoTone" two-tone-color="#f5222d" type="delete" />
-          </a-popconfirm>
-        </a>
-        <a-list-item-meta>
-          <div slot="description">
-            <span>{{item.timestamp | dateformat('YYYY-MM-DD HH:mm',true)}}</span>
-            <br>
-            <span>{{item.category}}</span>
-          </div>
-          <span slot="title" class="title">{{ item.title }}</span>
-          <a-avatar
-                  slot="avatar"
-                  icon="bell"
-                  :size="28"
-          />
-        </a-list-item-meta>
-      </a-list-item>
-    </a-list>
-    <a-modal
-            destroyOnClose
-            class="modal-area"
-            title="添加便签"
-            okText="确定"
-            :maskClosable="false"
-            cancelText="取消"
-            :visible="modalVisible"
-            :confirm-loading="confirmLoading"
-            @ok="updateHandle"
-            @cancel="onCancel"
-    >
-      <a-form-model
-              :model="memoForm"
-              labelAlign="left"
-              :label-col="{span:6}"
-              :wrapper-col="{ span: 12}"
-              ref="memoFormRef"
+   <div class='Home'>
+      <router-link to="/">我</router-link>
+      <a-list
+              class="memo-list"
+              :data-source="data"
       >
-        <a-form-model-item  prop="title" label="名称"><a-input placeholder="便签名称" v-model="memoForm.title" /></a-form-model-item>
-        <a-form-model-item  prop="type" label="类型">
-          <a-select v-model="memoForm.type" placeholder="类型">
-            <a-select-option v-for="item in types" :value="item.value" :key="item.value">{{item.label}}</a-select-option>
-          </a-select>
-        </a-form-model-item>
-        <a-form-model-item prop="timestamp" label="时间提醒">
-          <a-date-picker
-                  v-model="memoForm.timestamp"
-                  show-time
-                  type="date"
-                  valueFormat="x"
-                  placeholder="时间提醒"
-                  style="width: 100%;"
-          />
-        </a-form-model-item>
-      </a-form-model>
-    </a-modal>
-  </div>
+        <a-list-item class="memo-list-item" slot="renderItem" slot-scope="item,index">
+          <a slot="actions"><a-icon @click="editHandle(item)" type="edit" /></a>
+          <a slot="actions">
+            <a-popconfirm
+                    title="确定删除 ?"
+                    ok-text="确定"
+                    placement="left"
+                    cancel-text="取消"
+                    @confirm="deleteHandle(item)"
+            >
+              <a-icon theme="twoTone" two-tone-color="#f5222d" type="delete" />
+            </a-popconfirm>
+          </a>
+          <a-list-item-meta>
+            <div slot="description">
+              <span>{{item.timestamp | dateformat('YYYY-MM-DD HH:mm',true)}}</span>
+              <br>
+              <span>{{item.category}}</span>
+            </div>
+            <span slot="title" class="title">{{ item.title }}</span>
+            <a-avatar
+                    slot="avatar"
+                    icon="bell"
+                    :size="28"
+            />
+          </a-list-item-meta>
+        </a-list-item>
+      </a-list>
+      <a-modal
+              destroyOnClose
+              class="modal-area"
+              title="添加便签"
+              okText="确定"
+              :maskClosable="false"
+              cancelText="取消"
+              :visible="modalVisible"
+              :confirm-loading="confirmLoading"
+              @ok="updateHandle"
+              @cancel="onCancel"
+      >
+        <a-form-model
+                :model="memoForm"
+                labelAlign="left"
+                :label-col="{span:6}"
+                :wrapper-col="{ span: 12}"
+                ref="memoFormRef"
+        >
+          <a-form-model-item  prop="title" label="名称"><a-input placeholder="便签名称" v-model="memoForm.title" /></a-form-model-item>
+          <a-form-model-item  prop="type" label="类型">
+            <a-select v-model="memoForm.type" placeholder="类型">
+              <a-select-option v-for="item in types" :value="item.value" :key="item.value">{{item.label}}</a-select-option>
+            </a-select>
+          </a-form-model-item>
+          <a-form-model-item prop="timestamp" label="时间提醒">
+            <a-date-picker
+                    v-model="memoForm.timestamp"
+                    show-time
+                    type="date"
+                    valueFormat="x"
+                    placeholder="时间提醒"
+                    style="width: 100%;"
+            />
+          </a-form-model-item>
+        </a-form-model>
+      </a-modal>
+    </div>
 </template>
 
 <script>
@@ -134,15 +134,6 @@
       },
       // 初始化窗口，托盘
       resetSize(){
-        let screen = this.$electron.remote.screen.getPrimaryDisplay().workAreaSize;
-        const bounds = {
-          // 减去宽度加上右边距
-          x:screen.width - 360 - 100,
-          y:150,
-          width:360,
-          height:710
-        };
-        this.$electron.ipcRenderer.send('setMainWin',bounds)
         this.$electron.ipcRenderer.send('changeTray',true)
       },
     }

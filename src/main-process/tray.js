@@ -11,25 +11,32 @@ app.whenReady().then(() => {
     win.show()
   })
 
+  // 显示主面板
   function show() {
     win.show()
   }
+  // 托盘菜单
   function addTrayMenu() {
     ipcMain.on('changeTray',function (event, args) {
       if(args){
         const completeMenus = [
           {label: '打开主界面', click:show},
           {type:'separator'},
-          {label: '锁定'},
+          {
+            label: '锁定',
+            accelerator :'ctrl+l',
+            click:()=>{
+              win.webContents.send('routerSkip','lock');
+            }
+          },
           {label: '设置'},
           {type:'separator'},
           {label: '最小化'},
           {
             label: '退出登录',
             click:()=>{
-              win.webContents.send('home');
-            },
-            visible:false
+              win.webContents.send('routerSkip','login');
+            }
           },
           {
             label: '退出程序',

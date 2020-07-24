@@ -17,6 +17,11 @@ const routes = [
     ]
   },
   {
+    path: '/lock',
+    name:'lock',
+    component: () => import('../views/lock/Lock'),
+  },
+  {
     path: '/login',
     name: 'login',
     component: Login
