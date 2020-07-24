@@ -3,7 +3,7 @@
     <section class="layout-header-left no-darg">
       <img src="../../../../public/icon.png" class="logo" alt="">
       <span class="title">便签</span>
-      <a-badge dot><a-icon style="font-size: 15px" type="notification" /></a-badge>
+      <a-badge dot><a-icon class="notification-icon" type="notification" /></a-badge>
     </section>
     <section class="layout-header-right no-darg">
       <BaseIcon @click.native="resetSize" class="handle-icon"  :type="isCollapsed ? 'iconunfold':'iconfold'" ></BaseIcon>
@@ -61,10 +61,15 @@
     .title{
       font-size: 16px;
       margin: 0 16px 0 10px;
+      cursor: default;
     }
     .handle-icon{
       cursor: pointer;
       font-size: 18px;
+    }
+    .notification-icon{
+      cursor: pointer;
+      font-size: 15px;
     }
     .minus-icon{
       margin: 0 10px;
