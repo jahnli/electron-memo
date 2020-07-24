@@ -105,8 +105,8 @@
         }
       },
       // 创建窗口
-      createWin(field,title = '便签',routerPath){
-        this[field] = new BrowserWindow({
+      createWin(field,title = '便签',routerPath,args = {}){
+        let options = {
           width:800,
           height:500,
           title:title,
@@ -116,7 +116,9 @@
             nodeIntegration: true
           },
           resizable:false
-        })
+        };
+
+        this[field] = new BrowserWindow({...options,...args});
         this[field].setMenu(null);
         this[field].loadURL(`http://localhost:8080/#/${routerPath}`)
         this[field].openDevTools();
