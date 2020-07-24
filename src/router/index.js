@@ -27,6 +27,11 @@ const routes = [
     component: () => import('../views/setting/Setting'),
   },
   {
+    path: '/tools',
+    name:'tools',
+    component: () => import('../views/tools/Tools'),
+  },
+  {
     path: '/login',
     name: 'login',
     component: Login
