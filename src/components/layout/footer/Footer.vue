@@ -94,7 +94,6 @@
             width:700,
             height:400,
             icon:path.join(__static + '/icon.png'),
-            title:'设置',
             useContentSize:true,
             webPreferences: {
               nodeIntegration: true
