@@ -22,10 +22,15 @@ const routes = [
     component: () => import('../views/lock/Lock'),
   },
   {
+    path: '/setting',
+    name:'setting',
+    component: () => import('../views/setting/Setting'),
+  },
+  {
     path: '/login',
     name: 'login',
     component: Login
-  },
+  }
 ]
 
 const router = new VueRouter({

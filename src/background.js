@@ -27,7 +27,6 @@ function createWindow() {
     }
   })
 
-  //
   require('./main-process/ipcMain');
   require('./main-process/tray');
 
@@ -42,6 +41,7 @@ function createWindow() {
   win.on('closed', () => {
     win = null
   })
+
 }
 
 app.on('window-all-closed', () => {

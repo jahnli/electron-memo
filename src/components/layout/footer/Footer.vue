@@ -39,12 +39,14 @@
       </a-popover>
     </section>
     <section class="footer-right">
-      <a-icon type="setting" style="font-size: 18px" class="setting-icon" />
+      <a-icon @click="openSetting" type="setting" style="font-size: 18px" class="setting-icon" />
     </section>
   </div>
 </template>
 
 <script>
+  const { BrowserWindow } = window.require('electron').remote;
+  const path = require('path');
   export default {
     name: "Footer",
     data() {
@@ -75,12 +77,37 @@
           {title: '薇娅直播',category:'直播',timestamp:1591212364000,},
           {title: '薇娅直播',category:'直播',timestamp:1591212364000,},
         ],
+        // 窗口
+        secondWin:null
       }
     },
     mounted() {
 
     },
     methods: {
+      // 打开设置
+      openSetting(){
+        if(this.secondWin){
+          return
+        }else{
+          this.secondWin = new BrowserWindow({
+            width:700,
+            height:400,
+            icon:path.join(__static + '/icon.png'),
+            title:'设置',
+            useContentSize:true,
+            webPreferences: {
+              nodeIntegration: true
+            },
+            resizable:false
+          })
+          this.secondWin.setMenu(null);
+          this.secondWin.loadURL('http://localhost:8080/#/setting')
+          this.secondWin.on('closed', () => {
+            this.secondWin = null
+          })
+        }
+      },
       visibleChange(e){
 
       }
