@@ -3,12 +3,20 @@
     <section class="layout-header-left no-darg">
       <img src="../../../../public/icon.png" class="logo" alt="">
       <span class="title">便签</span>
-      <a-badge dot><a-icon class="notification-icon" type="notification" /></a-badge>
+      <a-tooltip title="提醒">
+        <a-badge dot><a-icon class="notification-icon" type="notification" /></a-badge>
+      </a-tooltip>
     </section>
     <section class="layout-header-right no-darg">
-      <BaseIcon @click.native="resetSize" class="handle-icon"  :type="isCollapsed ? 'iconunfold':'iconfold'" ></BaseIcon>
-      <BaseIcon @click.native="handle('min')" class="handle-icon minus-icon"  type="iconmove" ></BaseIcon>
-      <BaseIcon @click.native="handle('close')" class="handle-icon"  type="iconclose" ></BaseIcon>
+      <a-tooltip :title="isCollapsed ? '展开':'收起'">
+        <BaseIcon @click.native="resetSize" class="handle-icon"  :type="isCollapsed ? 'iconunfold':'iconfold'" ></BaseIcon>
+      </a-tooltip>
+      <a-tooltip title="最小化">
+        <BaseIcon @click.native="handle('min')" class="handle-icon minus-icon"  type="iconmove" ></BaseIcon>
+      </a-tooltip>
+      <a-tooltip title="关闭">
+        <BaseIcon @click.native="handle('close')" class="handle-icon"  type="iconclose" ></BaseIcon>
+      </a-tooltip>
     </section>
   </div>
 </template>
