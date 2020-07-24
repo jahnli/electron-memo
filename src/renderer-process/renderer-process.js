@@ -3,13 +3,25 @@ const {app} = window.require('electron').remote;
 import router from '../router/index';
 
 app.whenReady().then(()=>{
-  // 托盘退出登录
   ipcRenderer.on('routerSkip',function (event,routerName) {
-    let currentRoute = router.currentRoute;
-    if(currentRoute.name !== routerName){
-      router.push({path:`/${routerName}`})
-    } 
+    if(router.currentRoute.name !== routerName){
+      router.push({
+        path:`/${routerName}`
+      })
+    }
   })
+  // if(currentRoute.name !== 'login'){
+  //   // 注册锁定快捷键
+  //   globalShortcut.register('ctrl+L', () => {
+  //     if(currentRoute.name !== 'lock'){
+  //       router.push({path:`/lock`})
+  //     }else{
+  //       router.go(-1);
+  //     }
+  //   })
+  // }else{
+  //   globalShortcut.unregister('ctrl+L')
+  // }
 })
 
 export const mouseup = () =>{
