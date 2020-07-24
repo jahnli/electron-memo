@@ -8,7 +8,7 @@ app.whenReady().then(()=>{
     let currentRoute = router.currentRoute;
     if(currentRoute.name !== routerName){
       router.push({path:`/${routerName}`})
-    }
+    } 
   })
 })
 

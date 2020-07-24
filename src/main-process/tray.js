@@ -18,6 +18,7 @@ app.whenReady().then(() => {
   // 托盘菜单
   function addTrayMenu() {
     ipcMain.on('changeTray',function (event, args) {
+      tray.setImage(path.join(__static,'icon.png'))
       if(args){
         const completeMenus = [
           {label: '打开主界面', click:show},
@@ -27,6 +28,7 @@ app.whenReady().then(() => {
             accelerator :'ctrl+l',
             click:()=>{
               win.webContents.send('routerSkip','lock');
+              tray.setImage(path.join(__static,'icon-lock.png'))
             }
           },
           {label: '设置'},
