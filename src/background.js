@@ -4,7 +4,7 @@ import { app, protocol, BrowserWindow } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 const isDevelopment = process.env.NODE_ENV !== 'production'
-
+const path = require('path');
 let win;
 
 protocol.registerSchemesAsPrivileged([
@@ -20,6 +20,8 @@ function createWindow() {
     minHeight:120,
     width:700,
     height:400,
+    title:'便签',
+    icon:path.join(__static + '/icon.png'),
     frame:false,
     useContentSize:true,
     webPreferences: {
