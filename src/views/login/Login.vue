@@ -9,20 +9,28 @@
           <BaseIcon @click.native="handle('min')" type="iconmove" class="icon-handle "></BaseIcon>
           <BaseIcon @click.native="handle('close')"  type="iconclose" class="icon-handle "></BaseIcon>
         </div>
-        <a-form-model :model="loginForm">
-            <a-form-model-item class="no-drag"><a-input  placeholder="用户名" v-model="loginForm.userName" /></a-form-model-item>
-          <a-form-model-item class="no-drag" ><a-input placeholder="密码" v-model="loginForm.psw" /></a-form-model-item>
-          <a-form-model-item class="no-drag">
+        <a-form-model :model="loginForm" ref="ruleForm" :rules="rules">
+            <a-form-model-item prop="userName" class="no-drag">
+              <a-input  placeholder="用户名" v-model="loginForm.userName" >
+                <a-icon slot="prefix" type="user" />
+              </a-input>
+            </a-form-model-item>
+          <a-form-model-item prop="psw" class="no-drag" >
+            <a-input-password placeholder="密码" v-model="loginForm.psw" >
+              <a-icon type="edit" slot="prefix" />
+            </a-input-password>
+          </a-form-model-item>
+          <a-form-model-item class="no-drag" v-if="isLogin">
             <a-checkbox-group v-model="loginForm.type">
               <a-checkbox value="1" name="type"><span class="no-drag">记住密码</span></a-checkbox>
               <a-checkbox value="2" name="type"><span class="no-drag">自动登录</span></a-checkbox>
             </a-checkbox-group>
           </a-form-model-item>
           <a-form-model-item class="no-drag"  >
-            <a-button type="primary" block @click="loginHandle">登录</a-button>
+            <a-button type="primary" :loading="loading" block @click="isLogin ? loginHandle():registerHandle()">{{isLogin ? '登录':'注册'}}</a-button>
           </a-form-model-item>
         </a-form-model>
-        <span class="register-area no-drag">注册账号</span>
+        <span class="register-area no-drag"  @click="toggleStatus">{{isLogin ? '注册':'登录'}}</span>
       </a-col>
     </a-row>
   </div>
@@ -39,7 +47,19 @@
           type:[],
           userName:'',
           psw:''
-        }
+        },
+        isLogin:true,
+        loading:false,
+        rules: {
+          userName: [
+            { required: true, message: '请输入用户名', trigger: 'blur' },
+            { min: 3, max: 12, message: '用户名为3-12位数', trigger: 'blur' },
+          ],
+          psw: [
+            { required: true, message: '请输入密码', trigger: 'blur' },
+            { min: 3, message: '密码过于简单', trigger: 'blur' },
+          ],
+        },
       }
     },
     created() {
@@ -49,19 +69,76 @@
 
     },
     methods: {
+      // 注册
+      registerHandle(){
+        this.$refs.ruleForm.validate(async valid => {
+          if (valid) {
+            let {userName,psw}  = this.loginForm;
+            let params = {
+              ip:returnCitySN["cip"],
+              ip_address: returnCitySN["cname"],
+              userName,psw
+            }
+            let {data:res} = await this.$axios.post(this.$users.registerApi,params);
+            this.$apiMessage(res.msg,res.code);
+            if(res.code == this.$code.success){
+              let {userName,psw} = this.loginForm;
+              this.toggleStatus();
+              this.loginForm = {userName,psw}
+              this.loading = true;
+              setTimeout(()=>{
+                this.loginHandle();
+              },1000)
+            }
+          } else {
+            this.$message.error('格式错误！')
+            return false;
+          }
+        });
+      },
+      // 更换状态
+      toggleStatus(){
+        this.isLogin = !this.isLogin;
+        this.loginForm = {};
+      },
+      // 登录
       loginHandle(){
-        this.$router.push({
-          path:'/home'
-        })
-        let screen = this.$electron.remote.screen.getPrimaryDisplay().workAreaSize;
-        const bounds = {
-          // 减去宽度加上右边距
-          x:screen.width - 360 - 100,
-          y:150,
-          width:360,
-          height:710
-        };
-        this.$electron.ipcRenderer.send('setMainWin',bounds)
+        this.$refs.ruleForm.validate(async valid => {
+          if (valid) {
+            try {
+              let {userName,psw}  = this.loginForm;
+              let params = {
+                ip:returnCitySN["cip"],
+                ip_address: returnCitySN["cname"],
+                userName,psw
+              }
+              this.loading = true;
+              let {data:res} = await this.$axios.post(this.$users.loginApi,params);
+              this.$apiMessage(res.msg,res.code);
+              if(res.code == this.$code.success){
+                this.$router.push({
+                  path:'/home'
+                })
+                let screen = this.$electron.remote.screen.getPrimaryDisplay().workAreaSize;
+                const bounds = {
+                  // 减去宽度加上右边距
+                  x:screen.width - 360 - 100,
+                  y:150,
+                  width:360,
+                  height:710
+                };
+                this.$electron.ipcRenderer.send('setMainWin',bounds)
+              }
+              this.loading = false;
+            }
+            catch (e) {
+              console.log(e);
+            }
+          } else {
+            this.$message.error('格式错误！')
+            return false;
+          }
+        });
       },
       // 重置窗口
       resetSize(){

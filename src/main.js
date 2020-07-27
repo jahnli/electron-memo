@@ -3,9 +3,15 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import  "./plugins/ant";
+import './libs/api/config/index'
+
+import Axios from './libs/axios';
+Vue.prototype.$axios = Axios;
+
 const electron = window.require('electron');
 Vue.prototype.$electron = electron;
 Vue.config.productionTip = false;
+
 
 
 // 监听Esc退出程序
