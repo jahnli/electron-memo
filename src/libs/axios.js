@@ -19,7 +19,7 @@ server.interceptors.request.use((config) => {
 server.interceptors.response.use((res) => {
   return res;
 }, (error) => {
-  if(error && error.response){
+  if(error.response){
     switch (error.response.status) {
       case 400:
         error.message = '错误请求'
@@ -61,10 +61,18 @@ server.interceptors.response.use((res) => {
       default:
         error.message = `连接错误 ${error.response.status}`
     }
-    Message.error({
-      content:error.message
-    });
+  }else {
+    switch (error.message) {
+      case 'Network Error':
+        error.message = '网络错误'
+        break
+      default:
+        error.message = `连接错误 ${error.response.status}`
+    }
   }
+  Message.error({
+    content:error.message
+  });
   return Promise.reject(error)
 })
 export default server;
