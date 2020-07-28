@@ -1,6 +1,6 @@
 <template>
   <div class='handle'>
-    <a-select v-model="time" class="time-select-area"  >
+    <a-select v-model="time" @change="timeSelect" class="time-select-area"  >
       <a-select-option :value="item.value" v-for="(item,index) in times" :key="index">{{item.label}}</a-select-option>
     </a-select>
     <a-divider type="vertical" />
@@ -34,7 +34,12 @@
     mounted() {
 
     },
-    methods: {}
+    methods: {
+      // 时间选择
+      timeSelect(e){
+        this.$bus.$emit('getData', {type:'time',val:e})
+      }
+    }
   }
 </script>
 

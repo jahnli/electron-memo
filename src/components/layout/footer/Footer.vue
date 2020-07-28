@@ -105,7 +105,7 @@
               if(res.code == this.$code.success){
                 this.visible = false;
                 this.$refs.memoFormRef.resetFields();
-                this.$bus.$emit('getData', 'hello')
+                this.$bus.$emit('getData')
               }
             } else {
               return false;

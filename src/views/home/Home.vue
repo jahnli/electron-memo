@@ -99,7 +99,10 @@
     created() {
       this.getData();
       this.resetSize();
-      this.$bus.$on('getData', ()=> this.getData())
+      this.$bus.$on('getData', (e)=>{
+        console.log(e);
+        this.getData()
+      })
     },
     mounted() {
     },
@@ -107,7 +110,10 @@
       // 获取便签
       async getData(){
         try {
-          let {data:res} = await this.$axios.get(this.$memos.getApi,{params:{pid:this.userInfo.userName}});
+          let params = {
+            pid:this.userInfo.userName
+          };
+          let {data:res} = await this.$axios.get(this.$memos.getApi,{params});
           if(res.code == this.$code.success){
             this.list = res.data;
           }else{
