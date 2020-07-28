@@ -101,6 +101,7 @@
     created() {
       this.resetSize();
       this.getData();
+      this.$bus.$on('getData', ()=> this.getData())
     },
     mounted() {
     },

@@ -8,6 +8,9 @@ import './libs/api/config/index'
 import Axios from './libs/axios';
 Vue.prototype.$axios = Axios;
 
+import Bus from '@/libs/bus'
+Vue.prototype.$bus = Bus;
+
 const electron = window.require('electron');
 Vue.prototype.$electron = electron;
 Vue.config.productionTip = false;
