@@ -56,6 +56,7 @@
   import BaseIcon from '@/components/icon/icon.js';
   const { BrowserWindow } = window.require('electron').remote;
   const path = require('path');
+  import {mapState} from 'vuex';
   export default {
     name: "Footer",
     data() {
@@ -74,18 +75,6 @@
           {label:'娱乐事项',value:'play'},
           {label:'其他事项',value:'rest'},
         ],
-        // 确定按钮loading
-        confirmLoading:false,
-        data:[
-          {title: '罗永浩直播',type:'直播',timestamp:1595311164000,},
-          {title: '李佳琦直播',type:'直播',timestamp:1595314164000,},
-          {title: '向往的生活',type:'综艺',timestamp:1545311264000,},
-          {title: '极限挑战',type:'综艺',timestamp:1595314264000,},
-          {title: '薇娅直播',type:'直播',timestamp:1591212364000,},
-          {title: '薇娅直播',type:'直播',timestamp:1591212364000,},
-          {title: '薇娅直播',category:'直播',timestamp:1591212364000,},
-          {title: '薇娅直播',category:'直播',timestamp:1591212364000,},
-        ],
         rules: {
           name: [
             { required: true, message: '请输入标题', trigger: 'blur' }
@@ -102,24 +91,30 @@
     methods: {
       // 添加标签
       addMemo(){
-        this.$refs.memoFormRef.validate(async valid => {
-          let {name,type,timestamp} = this.memoForm;
-          if (valid) {
-            let params = {
-              ip:returnCitySN["cip"],
-              ip_address: returnCitySN["cname"],
-              name,type,remindTime:timestamp
+        try {
+          this.$refs.memoFormRef.validate(async valid => {
+            let {name,type,timestamp} = this.memoForm;
+            if (valid) {
+              let params = {
+                ip:returnCitySN["cip"],
+                ip_address: returnCitySN["cname"],
+                name,type,remindTime:timestamp,
+                pid:this.userInfo.userName
+              }
+              let {data:res} = await this.$axios.post(this.$memos.addApi,params);
+              if(res.code == this.$code.success){
+                this.visible = false;
+                this.$refs.memoFormRef.resetFields();
+                this.$bus.$emit('getData', 'hello')
+              }
+            } else {
+              return false;
             }
-            let {data:res} = await this.$axios.post(this.$memos.addApi,params);
-            if(res.code == this.$code.success){
-              this.visible = false;
-              this.$refs.memoFormRef.resetFields();
-              this.$bus.$emit('getData', 'hello')
-            }
-          } else {
-            return false;
-          }
-        });
+          });
+        }
+        catch (e) {
+          console.log(e);
+        }
       },
       // 打开更多工具
       openTools(){
@@ -161,6 +156,11 @@
       visibleChange(e){
 
       }
+    },
+    computed: {
+      ...mapState({
+        userInfo:state=>state.user.userInfo
+      })
     },
     components:{BaseIcon}
   }

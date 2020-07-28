@@ -46,7 +46,7 @@ app.whenReady().then(() => {
                   fs.writeFile('config.json',JSON.stringify({...res,type}),err=>{})
                 }
               }catch (e) {
-
+                console.log(e);
               }
             }
           },

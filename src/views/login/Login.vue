@@ -143,6 +143,7 @@
           let {data:res} = await this.$axios.post(this.$users.loginApi,params);
           this.$apiMessage(res.msg,res.code);
           if(res.code == this.$code.success){
+            this.$store.commit('saveUserInfo',res.data);
             this.$router.push({
               path:'/home'
             })

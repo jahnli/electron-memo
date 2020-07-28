@@ -73,7 +73,7 @@
 </template>
 
 <script>
-
+  import {mapState} from 'vuex';
   export default {
     name: "Home",
     data() {
@@ -97,8 +97,8 @@
       }
     },
     created() {
-      this.resetSize();
       this.getData();
+      this.resetSize();
       this.$bus.$on('getData', ()=> this.getData())
     },
     mounted() {
@@ -107,11 +107,15 @@
       // 获取便签
       async getData(){
         try {
-          let {data:res} = await this.$axios(this.$memos.getApi);
-          this.list = res.data;
+          let {data:res} = await this.$axios.get(this.$memos.getApi,{params:{pid:this.userInfo.userName}});
+          if(res.code == this.$code.success){
+            this.list = res.data;
+          }else{
+            this.$apiMessage(res.msg,res.code);
+          }
         }
         catch (e) {
-
+          console.log(e);
         }
       },
       // 更新操作
@@ -158,6 +162,11 @@
       resetSize(){
         this.$electron.ipcRenderer.send('changeTray',true)
       },
+    },
+    computed: {
+      ...mapState({
+        userInfo:state=>state.user.userInfo,
+      })
     },
     filters:{
       typeFilter(val){
