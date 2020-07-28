@@ -19,9 +19,9 @@
           </a>
           <a-list-item-meta>
             <div slot="description">
-              <span>{{item.remindTime | dateformat('YYYY-MM-DD HH:mm')}}</span>
-              <br>
               <span>{{item.type | typeFilter}}</span>
+              <div></div>
+              <span>{{item.remindTime | dateformat('YYYY-MM-DD HH:mm')}}</span>
             </div>
             <span slot="title" class="title">{{ item.name }}</span>
             <a-avatar
@@ -116,14 +116,24 @@
         }
       },
       // 更新操作
-      updateHandle(){
-
+      async updateHandle(){
+        try {
+          let {data:res} = await this.$axios.patch(this.$memos.updateApi,this.memoForm);
+          if(res.code == this.$code.success){
+            this.modalVisible = false;
+            this.$apiMessage(res.msg,res.code);
+            this.getData();
+          }
+        }
+        catch (e) {
+          this.$message.error('客户端错误！')
+        }
       },
       onCancel(){
         this.modalVisible = false;
         this.memoForm = {}
       },
-      // 编辑
+      // 打开编辑
       editHandle(item){
         this.modalVisible = true;
         let temp = JSON.stringify({
@@ -133,8 +143,17 @@
         this.memoForm = JSON.parse(temp);
       },
       // 删除操作
-      deleteHandle(item){
-        console.log(item);
+      async deleteHandle(item){
+        try {
+          let {data:res} = await this.$axios.delete(this.$memos.deleteApi,{data:{_id:item._id}});
+          if(res.code == this.$code.success){
+            this.getData();
+          }
+          this.$apiMessage(res.msg,res.code);
+        }
+        catch (e) {
+
+        }
       },
       // 初始化窗口，托盘
       resetSize(){
@@ -153,7 +172,7 @@
           case 'play':
             return '娱乐事项';
             break;
-          case '其他事项':
+          case 'rest':
             return '其他事项';
             break;
         }
