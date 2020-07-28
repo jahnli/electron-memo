@@ -26,8 +26,9 @@
             <span slot="title" class="title">{{ item.name }}</span>
             <a-avatar
                     slot="avatar"
-                    icon="bell"
+                    :icon="item.remindTime ? 'bell':'flag'"
                     :size="28"
+                    :style="item.remindTime ? {color: '#f56a00' , backgroundColor: '#fde3cf'}:''"
             />
           </a-list-item-meta>
         </a-list-item>
