@@ -21,7 +21,7 @@
             <div slot="description">
               <span>{{item.remindTime | dateformat('YYYY-MM-DD HH:mm')}}</span>
               <br>
-              <span>{{item.type}}</span>
+              <span>{{item.type | typeFilter}}</span>
             </div>
             <span slot="title" class="title">{{ item.name }}</span>
             <a-avatar
@@ -140,6 +140,24 @@
       resetSize(){
         this.$electron.ipcRenderer.send('changeTray',true)
       },
+    },
+    filters:{
+      typeFilter(val){
+        switch (val) {
+          case 'work':
+            return '工作提醒';
+            break;
+          case 'life':
+            return '生活事项';
+            break;
+          case 'play':
+            return '娱乐事项';
+            break;
+          case '其他事项':
+            return '其他事项';
+            break;
+        }
+      }
     }
   }
 </script>
