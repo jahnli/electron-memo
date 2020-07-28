@@ -1,5 +1,6 @@
 const {app,Menu, BrowserWindow ,Tray,ipcMain ,MenuItem}  = require('electron')
 const path = require('path');
+const fs = require('fs');
 let tray;
 app.whenReady().then(() => {
   const win  = BrowserWindow.getFocusedWindow();
@@ -37,6 +38,16 @@ app.whenReady().then(() => {
             label: '退出登录',
             click:()=>{
               win.webContents.send('routerSkip','login');
+              try {
+                let config = fs.readFileSync('config.json');
+                if(config){
+                  let res  = JSON.parse(config);
+                  let type = res.type.length >= 1 ? ['1']:[]
+                  fs.writeFile('config.json',JSON.stringify({...res,type}),err=>{})
+                }
+              }catch (e) {
+
+              }
             }
           },
           {

@@ -9,21 +9,21 @@
           <BaseIcon @click.native="handle('min')" type="iconmove" class="icon-handle "></BaseIcon>
           <BaseIcon @click.native="handle('close')"  type="iconclose" class="icon-handle "></BaseIcon>
         </div>
-        <a-form-model :model="loginForm" ref="ruleForm" :rules="rules">
+        <a-form-model  :model="loginForm" ref="ruleForm" :rules="rules">
             <a-form-model-item prop="userName" class="no-drag">
               <a-input  placeholder="用户名" v-model="loginForm.userName" >
                 <a-icon slot="prefix" type="user" />
               </a-input>
             </a-form-model-item>
-          <a-form-model-item prop="psw" class="no-drag" >
+          <a-form-model-item  prop="psw" class="no-drag" >
             <a-input-password placeholder="密码" v-model="loginForm.psw" >
               <a-icon type="edit" slot="prefix" />
             </a-input-password>
           </a-form-model-item>
           <a-form-model-item class="no-drag" v-if="isLogin">
-            <a-checkbox-group v-model="loginForm.type">
-              <a-checkbox value="1" name="type"><span class="no-drag">记住密码</span></a-checkbox>
-              <a-checkbox value="2" name="type"><span class="no-drag">自动登录</span></a-checkbox>
+            <a-checkbox-group :value="loginForm.type">
+              <a-checkbox value="1"  @change="checkboxChange"  name="type"><span class="no-drag">记住密码</span></a-checkbox>
+              <a-checkbox value="2"  @change="checkboxChange"  name="type"><span class="no-drag">自动登录</span></a-checkbox>
             </a-checkbox-group>
           </a-form-model-item>
           <a-form-model-item class="no-drag"  >
@@ -37,6 +37,7 @@
 </template>
 
 <script>
+  const fs = window.require('fs');
   import {mouseup,mousedown} from "../../renderer-process/renderer-process";
   import BaseIcon from '@/components/icon/icon'
   export default {
@@ -66,9 +67,41 @@
       this.resetSize();
     },
     mounted() {
-
+      this.$nextTick(()=>{
+        this.readConfig();
+      })
     },
     methods: {
+      // 读取配置
+      readConfig(){
+        try {
+          let json = fs.readFileSync('config.json');
+          let res = JSON.parse(json);
+          if(res.type.length){
+            this.loginForm = res;
+            if(this.loginForm.type.includes('2')){
+              this.loginSubmit();
+            }
+          }
+        } catch (e) {
+          console.log(e);
+        }
+
+      },
+      // 更改状态
+      checkboxChange(e){
+        let val = e.target.value;
+        let checked = e.target.checked;
+        if(val == 1 && checked){
+          this.loginForm.type = ['1'];
+        }else if(val == 1 && !checked){
+          this.loginForm.type = [];
+        }else if(val == 2 && checked){
+          this.loginForm.type = ['1','2'];
+        }else if(val == 2 && !checked){
+          this.loginForm.type = [];
+        }
+      },
       // 注册
       registerHandle(){
         this.$refs.ruleForm.validate(async valid => {
@@ -85,10 +118,6 @@
               let {userName,psw} = this.loginForm;
               this.toggleStatus();
               this.loginForm = {userName,psw}
-              this.loading = true;
-              setTimeout(()=>{
-                this.loginHandle();
-              },1000)
             }
           } else {
             this.$message.error('格式错误！')
@@ -102,44 +131,56 @@
         this.loginForm = {};
       },
       // 登录
+      async loginSubmit(){
+        try {
+          let {userName,psw}  = this.loginForm;
+          let params = {
+            ip:returnCitySN["cip"],
+            ip_address: returnCitySN["cname"],
+            userName,psw
+          }
+          this.loading = true;
+          let {data:res} = await this.$axios.post(this.$users.loginApi,params);
+          this.$apiMessage(res.msg,res.code);
+          if(res.code == this.$code.success){
+            this.$router.push({
+              path:'/home'
+            })
+            let screen = this.$electron.remote.screen.getPrimaryDisplay().workAreaSize;
+            const bounds = {
+              // 减去宽度加上右边距
+              x:screen.width - 360 - 100,
+              y:150,
+              width:360,
+              height:710
+            };
+            this.$electron.ipcRenderer.send('setMainWin',bounds);
+            this.createConfig(userName,psw);
+          }
+          this.loading = false;
+        }
+        catch (e) {
+          this.loading = false;
+          console.log(e);
+        }
+      },
       loginHandle(){
-        this.$refs.ruleForm.validate(async valid => {
+        this.$refs.ruleForm.validate(valid => {
           if (valid) {
-            try {
-              let {userName,psw}  = this.loginForm;
-              let params = {
-                ip:returnCitySN["cip"],
-                ip_address: returnCitySN["cname"],
-                userName,psw
-              }
-              this.loading = true;
-              let {data:res} = await this.$axios.post(this.$users.loginApi,params);
-              this.$apiMessage(res.msg,res.code);
-              if(res.code == this.$code.success){
-                this.$router.push({
-                  path:'/home'
-                })
-                let screen = this.$electron.remote.screen.getPrimaryDisplay().workAreaSize;
-                const bounds = {
-                  // 减去宽度加上右边距
-                  x:screen.width - 360 - 100,
-                  y:150,
-                  width:360,
-                  height:710
-                };
-                this.$electron.ipcRenderer.send('setMainWin',bounds)
-              }
-              this.loading = false;
-            }
-            catch (e) {
-              this.loading = false;
-              console.log(e);
-            }
+            this.loginSubmit();
           } else {
             this.$message.error('格式错误！')
             return false;
           }
         });
+      },
+      // 创建配置文件
+      createConfig(userName,psw){
+        let params = {
+          userName,psw,type:this.loginForm.type
+        }
+        fs.writeFile('config.json',JSON.stringify(params),err=>{
+        })
       },
       // 重置窗口
       resetSize(){
