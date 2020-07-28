@@ -10,12 +10,13 @@
                 trigger="click"
         >
           <a-form-model
+                  :rules="rules"
                   slot="content"
                   :model="memoForm"
                   labelAlign="left"
                   ref="memoFormRef"
           >
-            <a-form-model-item prop="title" label="名称"><a-input placeholder="便签名称" v-model="memoForm.title" /></a-form-model-item>
+            <a-form-model-item prop="name" label="名称"><a-input placeholder="便签名称" v-model="memoForm.name" /></a-form-model-item>
             <a-form-model-item prop="type" label="类型">
               <a-select v-model="memoForm.type" placeholder="类型">
                 <a-select-option v-for="item in types" :value="item.value" :key="item.value">{{item.label}}</a-select-option>
@@ -33,7 +34,7 @@
             </a-form-model-item>
             <a-form-model-item style="text-align: right">
               <a-button @click="$refs.memoFormRef.resetFields()" style="margin-right: 10px">重置</a-button>
-              <a-button type="primary">添加</a-button>
+              <a-button type="primary" @click="addMemo">添加</a-button>
             </a-form-model-item>
           </a-form-model>
           <a-icon style="font-size: 18px"  type="plus" class="add-icon" />
@@ -62,7 +63,7 @@
         visible:false,
         // 表单
         memoForm: {
-          title: '',
+          name: '',
           type: 'work',
           timestamp: undefined,
         },
@@ -85,6 +86,11 @@
           {title: '薇娅直播',category:'直播',timestamp:1591212364000,},
           {title: '薇娅直播',category:'直播',timestamp:1591212364000,},
         ],
+        rules: {
+          name: [
+            { required: true, message: '请输入标题', trigger: 'blur' }
+          ],
+        },
         // 窗口
         settingWin:null,
         toolsWin:null,
@@ -94,6 +100,26 @@
 
     },
     methods: {
+      // 添加标签
+      addMemo(){
+        this.$refs.memoFormRef.validate(async valid => {
+          let {name,type,timestamp} = this.memoForm;
+          if (valid) {
+            let params = {
+              ip:returnCitySN["cip"],
+              ip_address: returnCitySN["cname"],
+              name,type,remindTime:timestamp
+            }
+            let {data:res} = await this.$axios.post(this.$memos.addApi,params);
+            if(res.code == this.$code.success){
+              this.visible = false;
+              this.$refs.memoFormRef.resetFields();
+            }
+          } else {
+            return false;
+          }
+        });
+      },
       // 打开更多工具
       openTools(){
         if(this.toolsWin){
@@ -123,7 +149,6 @@
           },
           resizable:false
         };
-
         this[field] = new BrowserWindow({...options,...args});
         this[field].setMenu(null);
         this[field].loadURL(`http://localhost:8080/#/${routerPath}`)

@@ -34,6 +34,10 @@ Vue.prototype.$moment = moment;
 // 中文简体
 moment.locale('zh-cn');
 Vue.filter('dateformat', (val, pattern = 'YYYY-MM-DD HH:mm:ss',filter = false) =>{
+  if(!val) return ;
+  if(typeof val == "string"){
+    val = Number(val)
+  }
   if(filter){
     let year = new Date(val).getFullYear();
     if(year == diffYear){
