@@ -22,9 +22,11 @@
         ],
         time:'default',
         types:[
-          {value:'all',label:'全部分类'},
-          {value:'before',label:'生活'},
-          {value:'later',label:'娱乐'},
+          {label:'全部分类',value:'all'},
+          {label:'工作提醒',value:'work'},
+          {label:'生活事项',value:'life'},
+          {label:'娱乐事项',value:'play'},
+          {label:'其他事项',value:'rest'},
         ],
         type:'all'
       }

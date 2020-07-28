@@ -40,7 +40,6 @@
               :maskClosable="false"
               cancelText="取消"
               :visible="modalVisible"
-              :confirm-loading="confirmLoading"
               @ok="updateHandle"
               @cancel="onCancel"
       >
@@ -91,8 +90,6 @@
           {label:'娱乐事项',value:'play'},
           {label:'其他事项',value:'rest'},
         ],
-        // 确定按钮loading
-        confirmLoading:false,
         list:[],
         // modal显示
         modalVisible:false
