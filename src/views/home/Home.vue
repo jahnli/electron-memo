@@ -196,6 +196,7 @@
   .modal-area{
     .ant-modal-body{
       height: 300px;
+      padding: 0 20px;
       overflow: auto;
       .base-scroll-bar(6px,0);
       .ant-form-item-label{
