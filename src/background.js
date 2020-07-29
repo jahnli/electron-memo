@@ -12,11 +12,11 @@ protocol.registerSchemesAsPrivileged([
 ])
 
 // 登录 [700,400]
-// 主页面 [360,710]
-// 缩放 [360,120]
+// 主页面 [300,710]
+// 缩放 [300,120]
 function createWindow() {
   win = new BrowserWindow({
-    minWidth:360,
+    minWidth:300,
     minHeight:120,
     width:700,
     height:400,
