@@ -21,7 +21,7 @@
             </a-input-password>
           </a-form-model-item>
           <a-form-model-item class="no-drag" v-if="isLogin">
-            <a-checkbox-group :value="loginForm.type">
+            <a-checkbox-group  :value="loginForm.type" >
               <a-checkbox value="1"  @change="checkboxChange"  name="type"><span class="no-drag">记住密码</span></a-checkbox>
               <a-checkbox value="2"  @change="checkboxChange"  name="type"><span class="no-drag">自动登录</span></a-checkbox>
             </a-checkbox-group>
@@ -77,6 +77,7 @@
         try {
           let json = fs.readFileSync('config.json');
           let res = JSON.parse(json);
+          console.log(res);
           if(res.type.length){
             this.loginForm = res;
             if(this.loginForm.type.includes('2')){
@@ -90,6 +91,7 @@
       },
       // 更改状态
       checkboxChange(e){
+        console.log(e);
         let val = e.target.value;
         let checked = e.target.checked;
         if(val == 1 && checked){
@@ -117,7 +119,7 @@
             if(res.code == this.$code.success){
               let {userName,psw} = this.loginForm;
               this.toggleStatus();
-              this.loginForm = {userName,psw}
+              this.loginForm = {userName,psw,type:[]}
             }
           } else {
             this.$message.error('格式错误！')
@@ -129,6 +131,7 @@
       toggleStatus(){
         this.isLogin = !this.isLogin;
         this.loginForm = {};
+        this.readConfig()
       },
       // 登录
       async loginSubmit(){
