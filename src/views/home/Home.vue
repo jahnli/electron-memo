@@ -6,7 +6,13 @@
       >
         <a-list-item class="memo-list-item" :class="{'tag-area':item.type == 'tag'}" slot="renderItem" slot-scope="item,index">
           <a slot="actions" v-if="item.type !== 'tag'" >
-            <a-tooltip title="编辑"><a-icon @click="editHandle(item)" type="edit" /></a-tooltip>
+            <a-tooltip :title="item.status == 1 ? '编辑':''">
+              <a-icon
+                      @click="item.status == 1 ? editHandle(item):''"
+                      type="edit"
+                      :style="{color:item.status ==  1 ? '#1890ff':'rgba(0, 0, 0, 0.25)'}"
+              />
+            </a-tooltip>
           </a>
           <a slot="actions" v-if="item.type !== 'tag'">
             <a-popconfirm
