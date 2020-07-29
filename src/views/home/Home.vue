@@ -103,15 +103,20 @@
         modalVisible:false,
         // 头部筛选
         filterType:'',
-        filter:{}
+        timefilter:{},
+        typefilter:{}
       }
     },
     created() {
       this.getData();
       this.resetSize();
       this.$bus.$on('getData', (type,params)=>{
-        this.filterType = type;
-        this.filter = params;
+        if(type == 'time'){
+          this.timefilter = params
+        }
+        if(type == 'type'){
+          this.typefilter = params
+        }
         this.getData()
       })
     },
@@ -124,15 +129,15 @@
           let params = {
             pid:this.userInfo.userName
           };
-          if(this.filterType == 'time' && Object.keys(this.filter).length){
-            params.sort = this.filter
+          if(Object.keys(this.timefilter).length){
+            params.sort = this.timefilter
           }
-          if(this.filterType == 'type' && Object.keys(this.filter).length){
-            params.filter = this.filter
+          if(Object.keys(this.typefilter).length){
+            params.filter = this.typefilter
           }
           let {data:res} = await this.$axios.post(this.$memos.getApi,params);
           if(res.code == this.$code.success){
-            if(this.filterType == 'time' && this.filter.remindTime){
+            if(this.timefilter.remindTime){
               let beforeIndex = res.data.findIndex((item)=> moment(+item.remindTime).isBefore(moment().startOf('day')));
               if(beforeIndex !== -1){
                 res.data.splice(beforeIndex,0,{name:'超时',type:'tag'})
