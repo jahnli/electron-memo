@@ -6,11 +6,11 @@
               @lockChange="lockChange"
       ></LayoutHeader>
     </div>
-    <div class="header-area" @mousedown.prevent="mousedown" @mouseup.prevent="mouseup">
+    <div v-show="!isCollapsed" class="header-area" @mousedown.prevent="mousedown" @mouseup.prevent="mouseup">
       <LayoutHeaderHandle></LayoutHeaderHandle>
     </div>
-    <router-view  class="router-view"/>
-    <a-back-top class="back-top-area" :visibilityHeight="100" :target="targetDom"/>
+    <router-view v-show="!isCollapsed" class="router-view"/>
+    <a-back-top v-show="!isCollapsed" class="back-top-area" :visibilityHeight="100" :target="targetDom"/>
     <div class="footer-area" @mousedown.prevent="mousedown" @mouseup.prevent="mouseup">
       <LayoutFooter></LayoutFooter>
     </div>

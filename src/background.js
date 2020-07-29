@@ -13,11 +13,11 @@ protocol.registerSchemesAsPrivileged([
 
 // 登录 [700,400]
 // 主页面 [300,710]
-// 缩放 [300,120]
+// 缩放 [300,80]
 function createWindow() {
   win = new BrowserWindow({
     minWidth:300,
-    minHeight:120,
+    minHeight:80,
     width:700,
     height:400,
     title:'便签',

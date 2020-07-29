@@ -47,10 +47,10 @@
       resetSize(){
         let bounds = this.$electron.remote.getCurrentWindow().getBounds();
         let {height} = bounds;
-        if(height == 710){
-          bounds = {...bounds,height:120}
-        }else{
+        if(height == 80){
           bounds = {...bounds,height:710}
+        }else{
+          bounds = {...bounds,height:80}
         }
         this.$electron.ipcRenderer.send('setMainWin',bounds)
         this.isCollapsed = !this.isCollapsed;
