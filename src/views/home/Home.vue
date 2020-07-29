@@ -37,7 +37,7 @@
           <a-list-item-meta>
             <div slot="description">
               <div v-if="item.type !== 'tag'">
-                <span>{{item.type | typeFilter}}</span>
+                <span :class="{'finish-text':item.status == 2}">{{item.type | typeFilter}}</span>
                 <div></div>
                 <span>{{item.remindTime | dateformat('YYYY-MM-DD HH:mm',true)}}</span>
               </div>
@@ -45,7 +45,7 @@
                 <a-tag :color="tagColor(item.name)">{{item.name}}</a-tag>
               </div>
             </div>
-            <span  v-if="item.type !== 'tag'" slot="title" class="title">{{ item.name }}</span>
+            <span  :class="{'finish-text':item.status == 2}" v-if="item.type !== 'tag'" slot="title" class="title">{{ item.name }}</span>
             <a-avatar
                     v-if="item.type !== 'tag'"
                     slot="avatar"
@@ -293,6 +293,11 @@
         line-height: 39.9999px;
       }
     }
+  }
+  .finish-text{
+    text-decoration: line-through;
+    text-decoration-color: #f5222d;
+    color: lightgrey !important;
   }
   .tag-area{
     border-bottom: none !important;
