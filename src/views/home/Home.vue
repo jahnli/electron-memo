@@ -4,9 +4,9 @@
               class="memo-list"
               :data-source="list"
       >
-        <a-list-item class="memo-list-item" slot="renderItem" slot-scope="item,index">
-          <a slot="actions"><a-icon @click="editHandle(item)" type="edit" /></a>
-          <a slot="actions">
+        <a-list-item class="memo-list-item" :class="{'tag-area':item.type == 'tag'}" slot="renderItem" slot-scope="item,index">
+          <a slot="actions" v-if="item.type !== 'tag'"><a-icon @click="editHandle(item)" type="edit" /></a>
+          <a slot="actions" v-if="item.type !== 'tag'">
             <a-popconfirm
                     title="确定删除 ?"
                     ok-text="确定"
@@ -19,16 +19,22 @@
           </a>
           <a-list-item-meta>
             <div slot="description">
-              <span>{{item.type | typeFilter}}</span>
-              <div></div>
-              <span>{{item.remindTime | dateformat('YYYY-MM-DD HH:mm')}}</span>
+              <div v-if="item.type !== 'tag'">
+                <span>{{item.type | typeFilter}}</span>
+                <div></div>
+                <span>{{item.remindTime | dateformat('YYYY-MM-DD HH:mm',true)}}</span>
+              </div>
+              <div v-else class="tag-area">
+                <a-tag :color="tagColor(item.name)">{{item.name}}</a-tag>
+              </div>
             </div>
-            <span slot="title" class="title">{{ item.name }}</span>
+            <span  v-if="item.type !== 'tag'" slot="title" class="title">{{ item.name }}</span>
             <a-avatar
+                    v-if="item.type !== 'tag'"
                     slot="avatar"
                     :icon="item.remindTime ? 'bell':'flag'"
                     :size="28"
-                    :style="item.remindTime ? {color: '#f56a00' , backgroundColor: '#fde3cf'}:''"
+                    :style="item.remindTime ? {backgroundColor: '#fde3cf'}:''"
             />
           </a-list-item-meta>
         </a-list-item>
@@ -74,6 +80,7 @@
 
 <script>
   import {mapState} from 'vuex';
+  import moment from "moment";
   export default {
     name: "Home",
     data() {
@@ -93,14 +100,18 @@
         ],
         list:[],
         // modal显示
-        modalVisible:false
+        modalVisible:false,
+        // 头部筛选
+        filterType:'',
+        filter:{}
       }
     },
     created() {
       this.getData();
       this.resetSize();
-      this.$bus.$on('getData', (e)=>{
-        console.log(e);
+      this.$bus.$on('getData', (type,params)=>{
+        this.filterType = type;
+        this.filter = params;
         this.getData()
       })
     },
@@ -113,8 +124,28 @@
           let params = {
             pid:this.userInfo.userName
           };
-          let {data:res} = await this.$axios.get(this.$memos.getApi,{params});
+          if(this.filterType == 'time' && Object.keys(this.filter).length){
+            params.sort = this.filter
+          }
+          if(this.filterType == 'type' && Object.keys(this.filter).length){
+            params.filter = this.filter
+          }
+          let {data:res} = await this.$axios.post(this.$memos.getApi,params);
           if(res.code == this.$code.success){
+            if(this.filterType == 'time' && this.filter.remindTime){
+              let beforeIndex = res.data.findIndex((item)=> moment(+item.remindTime).isBefore(moment().startOf('day')));
+              if(beforeIndex !== -1){
+                res.data.splice(beforeIndex,0,{name:'超时',type:'tag'})
+              }
+              let afterIndex = res.data.findIndex((item)=> moment(+item.remindTime).isAfter(moment().endOf('day')));
+              if(afterIndex !== -1){
+                res.data.splice(afterIndex,0,{name:'未来',type:'tag'})
+              }
+              let todayIndex = res.data.findIndex(item=>moment(+item.remindTime).isBetween(moment().startOf('day'), moment().endOf('day')))
+              if(todayIndex !== -1){
+                res.data.splice(todayIndex,0,{name:'今天',type:'tag'})
+              }
+            }
             this.list = res.data;
           }else{
             this.$apiMessage(res.msg,res.code);
@@ -172,7 +203,24 @@
     computed: {
       ...mapState({
         userInfo:state=>state.user.userInfo,
-      })
+      }),
+      tagColor(val){
+        return function (type) {
+          switch (type) {
+            case '超时':
+              return 'red';
+              break;
+            case '今天':
+              return 'pink';
+              break;
+            case '未来':
+              return 'blue';
+              break;
+            default:
+              return ''
+          }
+        }
+      }
     },
     filters:{
       typeFilter(val){
@@ -199,6 +247,7 @@
   .Home {
     .memo-list{
       &-item{
+        border-bottom: 1px solid #f5f5f5;
         .title{
           font-size: 16px;
           color: #333;
@@ -216,5 +265,8 @@
         line-height: 39.9999px;
       }
     }
+  }
+  .tag-area{
+    border-bottom: none !important;
   }
 </style>

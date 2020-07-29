@@ -4,7 +4,7 @@
       <a-select-option :value="item.value" v-for="(item,index) in times" :key="index">{{item.label}}</a-select-option>
     </a-select>
     <a-divider type="vertical" />
-    <a-select v-model="type" class="time-select-area"  >
+    <a-select v-model="type" @change="typeSelect"  class="time-select-area"  >
       <a-select-option :value="item.value" v-for="(item,index) in types" :key="index">{{item.label}}</a-select-option>
     </a-select>
   </div>
@@ -16,9 +16,9 @@
     data() {
       return {
         times:[
-          {value:'default',label:'默认时间'},
-          {value:'before',label:'最先到期'},
-          {value:'later',label:'最晚到期'},
+          {value:'default',label:'默认'},
+          {value:1,label:'最先到期'},
+          {value:-1,label:'最晚到期'},
         ],
         time:'default',
         types:[
@@ -37,7 +37,23 @@
     methods: {
       // 时间选择
       timeSelect(e){
-        this.$bus.$emit('getData', {type:'time',val:e})
+        let params = {};
+        if( e == 'default') {
+          params = {createTime:-1};
+        }else{
+          params = {remindTime:+e};
+        }
+        this.$bus.$emit('getData','time', params)
+      },
+      // 类型选择
+      typeSelect(e){
+        let params = {};
+        if( e == 'all') {
+          params = {};
+        }else{
+          params = {type:e};
+        }
+        this.$bus.$emit('getData','type', params)
       }
     }
   }

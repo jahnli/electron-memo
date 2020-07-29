@@ -45,9 +45,9 @@
 <style lang="less">
   .Layout {
     .router-view{
-      padding:0 20px;
+      padding:10px 20px;
       width: 100%;
-      height:calc(~'100% - 110px');
+      height:calc(~'100% - 120px');
       position: absolute;
       .base-scroll-bar(6px,0);
       overflow:auto;

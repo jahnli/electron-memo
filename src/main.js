@@ -44,7 +44,7 @@ Vue.filter('dateformat', (val, pattern = 'YYYY-MM-DD HH:mm:ss',filter = false) =
   if(filter){
     let year = new Date(val).getFullYear();
     if(year == diffYear){
-      if(+new Date() - val < 86400000){
+      if(moment(val).isBetween(moment().startOf('day'), moment().endOf('day'))){
         return moment(val).format('[今天] HH:mm');
       }
       return moment(val).format('MM-DD HH:mm')
