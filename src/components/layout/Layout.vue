@@ -7,6 +7,7 @@
       <LayoutHeaderHandle></LayoutHeaderHandle>
     </div>
     <router-view  :class="{'no-show':isCollapsed}"  v-show="!isCollapsed" class="router-view"/>
+    <a-back-top class="back-top-area" :visibilityHeight="100" :target="targetDom"/>
     <div class="footer-area" @mousedown.prevent="mousedown" @mouseup.prevent="mouseup">
       <LayoutFooter></LayoutFooter>
     </div>
@@ -32,6 +33,9 @@
 
     },
     methods: {
+      targetDom(){
+        return document.querySelector('.Home');
+      },
       collapseChange(isCollapsed){
         this.isCollapsed = isCollapsed;
       },
@@ -73,6 +77,20 @@
       height: 40px;
       bottom: 0;
       border-top: 1px solid #d9d9d9;
+    }
+    .back-top-area{
+      bottom: 45px;
+      width: 25px;
+      height: 25px;
+      .ant-back-top-content{
+        width: 25px;
+        height: 25px;
+        .ant-back-top-icon{
+          width: 11px;
+          height: 18px;
+          margin: 5px auto;
+        }
+      }
     }
   }
 </style>

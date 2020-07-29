@@ -7,8 +7,7 @@
     >
       <a-tab-pane key="1" tab="通用设置">
         <h2>基本设置</h2>
-        <div class="item"><a-checkbox @change="">开机启动</a-checkbox></div>
-        <div class="item"><a-checkbox @change="">禁止移动窗体</a-checkbox></div>
+        <div class="item"><a-checkbox @change="autoStartHandle">开机启动</a-checkbox></div>
         <p class="label">默认字体：</p>
         <a-select default-value="lucy" style="width: 120px" >
           <a-select-option value="jack">Jack</a-select-option>
@@ -38,7 +37,10 @@
 
     },
     methods: {
-
+      // 开机启动
+      autoStartHandle(e){
+        this.$electron.ipcRenderer.send('autoStart',e.target.checked)
+      }
     },
     components:{About}
   }
