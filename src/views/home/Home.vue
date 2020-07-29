@@ -5,7 +5,9 @@
               :data-source="list"
       >
         <a-list-item class="memo-list-item" :class="{'tag-area':item.type == 'tag'}" slot="renderItem" slot-scope="item,index">
-          <a slot="actions" v-if="item.type !== 'tag'"><a-icon @click="editHandle(item)" type="edit" /></a>
+          <a slot="actions" v-if="item.type !== 'tag'" >
+            <a-tooltip title="编辑"><a-icon @click="editHandle(item)" type="edit" /></a-tooltip>
+          </a>
           <a slot="actions" v-if="item.type !== 'tag'">
             <a-popconfirm
                     title="确定删除 ?"
@@ -16,6 +18,15 @@
             >
               <a-icon theme="twoTone" two-tone-color="#f5222d" type="delete" />
             </a-popconfirm>
+          </a>
+          <a slot="actions" v-if="item.type !== 'tag'">
+            <a-tooltip placement="left" :title="item.status == 1 ? '完成':'撤销完成'">
+              <a-icon
+                      @click="finishHandle(item)"
+                      :type="item.status == 1 ? 'check':'undo'"
+                      :style="{color:item.status ==  1 ? '#1890ff':'rgba(0, 0, 0, 0.25)'}"
+              />
+            </a-tooltip>
           </a>
           <a-list-item-meta>
             <div slot="description">
@@ -90,6 +101,7 @@
           name: '',
           type: 'work',
           remindTime: undefined,
+          status:1
         },
         // select
         types:[
@@ -123,6 +135,12 @@
     mounted() {
     },
     methods: {
+      // 完成 、撤销
+      finishHandle(item){
+        item.status = item.status == 2 ? 1:2;
+        this.memoForm = item;
+        this.updateHandle();
+      },
       // 获取便签
       async getData(){
         try {
@@ -166,7 +184,6 @@
           let {data:res} = await this.$axios.patch(this.$memos.updateApi,this.memoForm);
           if(res.code == this.$code.success){
             this.modalVisible = false;
-            this.$apiMessage(res.msg,res.code);
             this.getData();
           }
         }
