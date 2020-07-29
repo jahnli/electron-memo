@@ -8,6 +8,9 @@
       </a-tooltip>
     </section>
     <section class="layout-header-right no-darg">
+      <a-tooltip :title="isLock ? '解锁':'锁定'">
+        <BaseIcon @click.native="lock" class="handle-icon"  :type="isLock ? 'iconicon':'iconjiesuo01'" ></BaseIcon>
+      </a-tooltip>
       <a-tooltip :title="isCollapsed ? '展开':'收起'">
         <BaseIcon @click.native="resetSize" class="handle-icon"  :type="isCollapsed ? 'iconunfold':'iconfold'" ></BaseIcon>
       </a-tooltip>
@@ -27,13 +30,19 @@
     name: "layout-header",
     data() {
       return {
-        isCollapsed:false
+        isCollapsed:false,
+        isLock:false
       }
     },
     mounted() {
 
     },
     methods: {
+      // 锁定
+      lock(){
+        this.isLock = !this.isLock;
+        this.$emit("lockChange",this.isLock);
+      },
       // 重置窗口
       resetSize(){
         let bounds = this.$electron.remote.getCurrentWindow().getBounds();
@@ -74,13 +83,11 @@
     .handle-icon{
       cursor: pointer;
       font-size: 18px;
+      margin-left: 10px;
     }
     .notification-icon{
       cursor: pointer;
       font-size: 15px;
-    }
-    .minus-icon{
-      margin: 0 10px;
     }
   }
 </style>

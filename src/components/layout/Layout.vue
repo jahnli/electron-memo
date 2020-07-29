@@ -1,12 +1,15 @@
 <template>
   <div class='Layout'>
     <div class="system-bar" @mousedown.prevent="mousedown" @mouseup.prevent="mouseup">
-      <LayoutHeader @collapseChange="collapseChange"></LayoutHeader>
+      <LayoutHeader
+              @collapseChange="collapseChange"
+              @lockChange="lockChange"
+      ></LayoutHeader>
     </div>
     <div class="header-area" @mousedown.prevent="mousedown" @mouseup.prevent="mouseup">
       <LayoutHeaderHandle></LayoutHeaderHandle>
     </div>
-    <router-view  :class="{'no-show':isCollapsed}"  v-show="!isCollapsed" class="router-view"/>
+    <router-view  class="router-view"/>
     <a-back-top class="back-top-area" :visibilityHeight="100" :target="targetDom"/>
     <div class="footer-area" @mousedown.prevent="mousedown" @mouseup.prevent="mouseup">
       <LayoutFooter></LayoutFooter>
@@ -23,7 +26,8 @@
     name: "Layout",
     data() {
       return {
-        isCollapsed:false
+        isCollapsed:false,
+        isLock:false
       }
     },
     created() {
@@ -36,11 +40,20 @@
       targetDom(){
         return document.querySelector('.Home');
       },
+      lockChange(isLock){
+        this.isLock = isLock;
+      },
       collapseChange(isCollapsed){
         this.isCollapsed = isCollapsed;
       },
-      mouseup,
-      mousedown:(e)=>mousedown(e),
+      mouseup(){
+        if(this.isLock) return;
+        mouseup();
+      },
+      mousedown(e){
+        if(this.isLock) return;
+        mousedown(e)
+      },
     },
     components:{LayoutHeader,LayoutFooter,LayoutHeaderHandle}
   }
@@ -56,9 +69,6 @@
       .base-scroll-bar(6px,0);
       overflow:auto;
       top: 80px;
-    }
-    .no-show{
-      height: 0;
     }
     .header-area,.footer-area{
       width: 100%;
@@ -87,8 +97,8 @@
         height: 25px;
         .ant-back-top-icon{
           width: 11px;
-          height: 18px;
-          margin: 5px auto;
+          height: 11px;
+          margin: 7px auto;
         }
       }
     }
