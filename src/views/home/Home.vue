@@ -40,7 +40,7 @@
             <div v-if="item.type !== 'tag'">
               <span :class="{'finish-text':item.status == 2}">{{item.type | typeFilter}}</span>
               <div></div>
-              <span>{{item.remindTime | dateformat('YYYY-MM-DD HH:mm',true)}}</span>
+              <span :class="{'finish-text':item.status == 2}">{{item.remindTime | dateformat('YYYY-MM-DD HH:mm',true)}}</span>
             </div>
             <div v-else class="tag-area">
               <a-tag :color="tagColor(item.name)">{{item.name}}</a-tag>
@@ -179,7 +179,7 @@
         let temp = this.list.filter(item=>item.remindTime);
         temp.sort((a,b)=>+a.remindTime - +b.remindTime);
         temp.forEach((item, index) => {
-          // TODO:添加 提醒事项字段 
+          // TODO:添加 提醒事项字段
           if (item.status == 1 && item.remindTime && +item.remindTime > +new Date() && +item.remindTime - +new Date() < 1000 * 60 * 60 * 24) {
             this.timers[`timer_${index}`] = setTimeout(() => {
               this.$electron.remote.BrowserWindow.fromId(1).show();
