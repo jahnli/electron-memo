@@ -118,8 +118,8 @@
       <span>{{remindData.name}}</span>
       <div class="btns">
         <a-button size="small" type="danger">删除</a-button>
-        <a-button size="small" type="primary">完成</a-button>
-        <a-button size="small" type="dashed" >忽略</a-button>
+        <a-button size="small" type="primary" @click="finishHandle(remindData);drawerVisible = false;">完成</a-button>
+        <a-button size="small" type="dashed" @click="drawerVisible = false">知道了</a-button>
       </div>
     </a-drawer>
   </div>
@@ -179,7 +179,7 @@
         let temp = this.list.filter(item=>item.remindTime);
         temp.sort((a,b)=>+a.remindTime - +b.remindTime);
         temp.forEach((item, index) => {
-          if (item.remindTime && +item.remindTime > +new Date() && +item.remindTime - +new Date() < 1000 * 60 * 60 * 24) {
+          if (item.status == 1 && item.remindTime && +item.remindTime > +new Date() && +item.remindTime - +new Date() < 1000 * 60 * 60 * 24) {
             this.remindList.push(item);
             this.timers[`timer_${index}`] = setTimeout(() => {
               this.$electron.remote.BrowserWindow.fromId(1).show();

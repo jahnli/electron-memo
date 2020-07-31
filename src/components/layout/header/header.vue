@@ -5,7 +5,7 @@
       <span class="title">便签</span>
       <a-tooltip title="提醒" class="notification-icon" @click="toggleRemind">
         <a-badge :count="remindCount" dot class="remind-badge"><a-icon   type="notification" /></a-badge>
-        <span class="remindCount">{{remindCount}}</span>
+        <span v-show="remindCount" class="remindCount">{{remindCount}}</span>
       </a-tooltip>
     </section>
     <section class="layout-header-right no-darg">
