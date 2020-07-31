@@ -56,7 +56,7 @@
           </a-list-item-meta>
         </a-list-item>
       </a-list>
-     <a-modal
+      <a-modal
               destroyOnClose
               class="modal-area"
               title="编辑便签"
@@ -92,6 +92,17 @@
           </a-form-model-item>
         </a-form-model>
       </a-modal>
+     <a-drawer
+             class="remind-drawe"
+             title="Basic Drawer"
+             placement="top"
+             :closable="false"
+             :visible="true"
+     >
+       <p>Some contents...</p>
+       <p>Some contents...</p>
+       <p>Some contents...</p>
+     </a-drawer>
     </div>
 </template>
 
@@ -122,7 +133,10 @@
         // 头部筛选
         filterType:'',
         timefilter:{},
-        typefilter:{}
+        typefilter:{},
+        // 定时器
+        timers:{},
+
       }
     },
     created() {
@@ -140,12 +154,37 @@
     },
     mounted() {
     },
+    destroyed() {
+      this.clearTimeout();
+    },
     methods: {
+      // 通知
+      notification(){
+        this.clearTimeout();
+        this.list.forEach((item,index)=>{
+          let isBeforeTime =  moment(+item.remindTime).isBefore(moment().startOf('day'));
+          if(item.remindTime && +item.remindTime > +new Date()){
+            this.timers[`timer_${index}`] = setTimeout(()=>{
+              console.log(item.name + '通知');
+              this.$electron.remote.BrowserWindow.fromId(1).show();
+              this.drawerVisible = true;
+            },+item.remindTime - +new Date());
+          }
+        })
+        console.log(this.timers);
+      },
       // 完成 、撤销
       finishHandle(item){
         item.status = item.status == 2 ? 1:2;
         this.memoForm = item;
         this.updateHandle();
+      },
+      // 清空定时器
+      clearTimeout(){
+        for (const timersKey in this.timers) {
+          clearTimeout(this.timers[timersKey]);
+        }
+        this.timers = {};
       },
       // 获取便签
       async getData(){
@@ -176,6 +215,7 @@
               }
             }
             this.list = res.data;
+            this.notification();
           }else{
             this.$apiMessage(res.msg,res.code);
           }
@@ -273,6 +313,7 @@
 
 <style lang="less">
   .Home {
+    overflow: hidden !important;
     .memo-list{
       &-item{
         border-bottom: 1px solid #f5f5f5;
@@ -281,6 +322,13 @@
           color: #333;
         }
       }
+    }
+  }
+  .remind-drawe{
+    top: 40px;
+    height: calc(~'100% - 80px') !important;
+    .ant-drawer-content-wrapper{
+      box-shadow: none !important;
     }
   }
   .modal-area{

@@ -34,16 +34,18 @@
       this.$electron.remote.getCurrentWindow().resizable = true;
     },
     mounted() {
-      console.log(this.$electron);
-      this.$electron.remote.getCurrentWindow().on('will-resize',(e,bounds)=>{
-        if(bounds.height <= 120) {
-          this.isCollapsed = true;
-        }else{
-          this.isCollapsed = false
-        }
-      })
+      this.listenResize();
     },
     methods: {
+      listenResize(){
+        this.$electron.remote.getCurrentWindow().on('will-resize',(e,bounds)=>{
+          if(bounds.height <= 120) {
+            this.isCollapsed = true;
+          }else{
+            this.isCollapsed = false
+          }
+        })
+      },
       targetDom(){
         return document.querySelector('.Home');
       },
