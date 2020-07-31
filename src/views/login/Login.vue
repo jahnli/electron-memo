@@ -91,7 +91,6 @@
       },
       // 更改状态
       checkboxChange(e){
-        console.log(e);
         let val = e.target.value;
         let checked = e.target.checked;
         if(val == 1 && checked){
@@ -153,9 +152,9 @@
             let screen = this.$electron.remote.screen.getPrimaryDisplay().workAreaSize;
             const bounds = {
               // 减去宽度加上右边距
-              x:screen.width - 300 - 100,
+              x:screen.width - 320 - 100,
               y:150,
-              width:300,
+              width:320,
               height:710
             };
             this.$electron.ipcRenderer.send('setMainWin',bounds);
