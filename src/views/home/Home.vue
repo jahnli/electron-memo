@@ -101,11 +101,20 @@
             :class="{'remind-drawer-show':drawerVisible}"
             placement="top"
             destroyOnClose
-            :title="`${remindList.length} 条提醒信息`"
             :closable="false"
             :height="200"
             :visible="drawerVisible"
     >
+      <template v-slot:title>
+        <a-row type="flex" justify="space-between">
+          <span>{{remindList.length}} 条提醒信息</span>
+          <div>
+            <a-icon :style="{fontSize:'14px',color:currentRemindIndex <= 0 ? 'rgba(0,0,0,.25)':'rgba(0,0,0,.65)'}" type="left" @click="prev" class="page-icon"/>
+            <span class="page-count">{{currentRemindIndex + 1}}</span>
+            <a-icon :style="{fontSize:'14px',color:currentRemindIndex + 1 >= remindList.length ? 'rgba(0,0,0,.25)':'rgba(0,0,0,.65)'}" type="right" @click="next" class="page-icon"/>
+          </div>
+        </a-row>
+      </template>
       <span>{{remindData.name}}</span>
       <div class="btns">
         <a-button size="small" type="danger">删除</a-button>
@@ -149,6 +158,7 @@
         // 提醒
         drawerVisible:false,
         remindList:[],
+        currentRemindIndex:0,
         remindData:{}
       }
     },
@@ -166,7 +176,8 @@
       // 通知
       notification() {
         this.clearTimeout();
-        let temp = this.list.sort((a,b)=>+a.remindTime - +b.remindTime);
+        let temp = this.list.filter(item=>item.remindTime);
+        temp.sort((a,b)=>+a.remindTime - +b.remindTime);
         temp.forEach((item, index) => {
           if (item.remindTime && +item.remindTime > +new Date() && +item.remindTime - +new Date() < 1000 * 60 * 60 * 24) {
             this.remindList.push(item);
@@ -184,7 +195,7 @@
         this.$bus.$on('toggleRemind',()=>{
           if(this.remindList.length){
             this.drawerVisible = !this.drawerVisible;
-            this.remindData = this.remindList[0];
+            this.remindData = this.remindList[this.currentRemindIndex];
           }
         })
         this.$bus.$on('getData', (type, params) => {
@@ -196,6 +207,17 @@
           }
           this.getData()
         })
+      },
+      // 提醒分页
+      prev(){
+        if(this.currentRemindIndex <= 0) return;
+        this.currentRemindIndex--;
+        this.remindData = this.remindList[this.currentRemindIndex];
+      },
+      next(){
+        if(this.currentRemindIndex + 1 >= this.remindList.length) return;
+        this.currentRemindIndex++;
+        this.remindData = this.remindList[this.currentRemindIndex];
       },
       // 完成 、撤销
       finishHandle(item) {
@@ -335,8 +357,6 @@
 
 <style lang="less">
   .Home {
-    overflow: hidden !important;
-
     .memo-list {
       &-item {
         border-bottom: 1px solid #f5f5f5;
@@ -361,6 +381,13 @@
       border-top: 1px dashed #e8e8e8;
       border-bottom: 1px dashed #e8e8e8;
       border-radius: unset;
+      .page-icon{
+        cursor: pointer;
+      }
+      .page-count{
+        color: #40a9ff;
+        margin: 0 10px;
+      }
     }
     &-header{
       .title{
