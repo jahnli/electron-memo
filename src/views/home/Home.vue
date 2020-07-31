@@ -180,6 +180,7 @@
         temp.sort((a,b)=>+a.remindTime - +b.remindTime);
         temp.forEach((item, index) => {
           // TODO:添加 提醒事项字段
+          // 切换分类时，提醒数量 错误问题
           if (item.status == 1 && item.remindTime && +item.remindTime > +new Date() && +item.remindTime - +new Date() < 1000 * 60 * 60 * 24) {
             this.timers[`timer_${index}`] = setTimeout(() => {
               this.$electron.remote.BrowserWindow.fromId(1).show();
