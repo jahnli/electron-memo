@@ -3,8 +3,9 @@
     <section class="layout-header-left no-darg">
       <img src="../../../../public/icon.png" class="logo" alt="">
       <span class="title">便签</span>
-      <a-tooltip title="提醒">
-        <a-badge dot><a-icon class="notification-icon" type="notification" /></a-badge>
+      <a-tooltip title="提醒" class="notification-icon" @click="toggleRemind">
+        <a-badge :count="remindCount" dot class="remind-badge"><a-icon   type="notification" /></a-badge>
+        <span class="remindCount">{{remindCount}}</span>
       </a-tooltip>
     </section>
     <section class="layout-header-right no-darg">
@@ -31,17 +32,24 @@
     data() {
       return {
         isCollapsed:false,
-        isLock:false
+        isLock:false,
+        remindCount:0
       }
     },
     mounted() {
-
+      this.$bus.$on('remindCount',(count = 0)=>{
+        this.remindCount = count;
+      })
     },
     methods: {
       // 锁定
       lock(){
         this.isLock = !this.isLock;
         this.$emit("lockChange",this.isLock);
+      },
+      // 切换
+      toggleRemind(){
+        this.$bus.$emit("toggleRemind");
       },
       // 重置窗口
       resetSize(){
@@ -84,6 +92,9 @@
       cursor: pointer;
       font-size: 18px;
       margin-left: 10px;
+    }
+    .remindCount{
+      margin-left: 5px;
     }
     .notification-icon{
       cursor: pointer;
