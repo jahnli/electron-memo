@@ -86,7 +86,6 @@
         } catch (e) {
           console.log(e);
         }
-
       },
       // 更改状态
       checkboxChange(e){

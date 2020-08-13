@@ -1,6 +1,5 @@
 const {app,Menu, BrowserWindow ,Tray,ipcMain ,MenuItem}  = require('electron')
 const path = require('path');
-import Bus from '../libs/bus';
 const fs = require('fs');
 let tray;
 app.whenReady().then(() => {

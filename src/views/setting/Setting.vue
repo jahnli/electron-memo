@@ -7,7 +7,7 @@
     >
       <a-tab-pane key="1" tab="通用设置">
         <h2>基本设置</h2>
-        <div class="item"><a-checkbox @change="autoStartHandle">开机启动</a-checkbox></div>
+        <div class="item"><a-checkbox v-model="restart" @change="autoStartHandle">开机启动</a-checkbox></div>
         <p class="label">默认字体：</p>
         <a-select default-value="lucy" style="width: 120px" >
           <a-select-option value="jack">Jack</a-select-option>
@@ -26,20 +26,41 @@
 
 <script>
   import About from './About.vue';
+  const fs = window.require('fs');
   export default {
     name: "setting",
     data() {
       return {
-        currentTab:'1'
+        currentTab:'1',
+        restart:null
       }
     },
     mounted() {
-
+      this.readConfig();
     },
     methods: {
+      // 读取配置
+      readConfig(){
+        try {
+          let json = fs.readFileSync('config.json');
+          let res = JSON.parse(json);
+          this.restart = res.restart;
+        } catch (e) {
+          console.log(e);
+        }
+      },
       // 开机启动
       autoStartHandle(e){
-        this.$electron.ipcRenderer.send('autoStart',e.target.checked)
+        this.$electron.ipcRenderer.send('autoStart',e.target.checked);
+        try {
+          let config = fs.readFileSync('config.json');
+          if(config){
+            let res  = JSON.parse(config);
+            fs.writeFile('config.json',JSON.stringify({...res,restart:e.target.checked}),err=>{})
+          }
+        }catch (e){
+
+        }
       }
     },
     components:{About}

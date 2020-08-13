@@ -148,7 +148,7 @@
         this[field] = new BrowserWindow({...options,...args});
         this[field].setMenu(null);
         this[field].loadURL(`http://localhost:8080/#/${routerPath}`)
-        this[field].openDevTools();
+        // this[field].openDevTools();
         this[field].on('closed', () => {
           this[field] = null
         })
