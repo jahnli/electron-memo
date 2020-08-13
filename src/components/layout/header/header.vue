@@ -37,7 +37,18 @@
       }
     },
     mounted() {
-      this.$electron.ipcRenderer.on('resetSize',(event,args)=> this.resetSize());
+      this.$electron.ipcRenderer.on('resetSize',(event,args)=>{
+        let bounds = this.$electron.remote.getCurrentWindow().getBounds();
+        let {height} = bounds;
+        if(height >= 380){
+          return;
+        }else{
+          bounds = {...bounds,height:710}
+        }
+        this.$electron.ipcRenderer.send('setMainWin',bounds)
+        this.isCollapsed = false;
+        this.$emit("collapseChange",false);
+      });
       this.$bus.$on('remindCount',(count = 0)=>{
         this.remindCount = count;
       })
