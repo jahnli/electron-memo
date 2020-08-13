@@ -1,5 +1,6 @@
 const {app,Menu, BrowserWindow ,Tray,ipcMain ,MenuItem}  = require('electron')
 const path = require('path');
+import Bus from '../libs/bus';
 const fs = require('fs');
 let tray;
 app.whenReady().then(() => {
@@ -27,6 +28,7 @@ app.whenReady().then(() => {
           {
             label: '锁定',
             click:()=>{
+              win.webContents.send('resetSize');
               win.webContents.send('routerSkip','lock');
               tray.setImage(path.join(__static,'icon-lock.png'))
             }

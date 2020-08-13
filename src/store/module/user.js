@@ -11,7 +11,7 @@ export default {
   mutations:{
     // 保存用户名
     saveUserInfo(state,userInfo){
-      state.userInfo = {...userInfo,psw:null};
+      state.userInfo = userInfo;
     },
   }
 }

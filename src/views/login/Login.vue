@@ -77,7 +77,6 @@
         try {
           let json = fs.readFileSync('config.json');
           let res = JSON.parse(json);
-          console.log(res);
           if(res.type.length){
             this.loginForm = res;
             if(this.loginForm.type.includes('2')){

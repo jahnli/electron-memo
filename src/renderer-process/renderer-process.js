@@ -10,8 +10,6 @@ app.whenReady().then(()=>{
       })
     }
   })
-
-
 })
 
 export const mouseup = () =>{

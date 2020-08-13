@@ -2,7 +2,7 @@
   <div class='Lock'  @mousedown="mousedown" @mouseup="mouseup">
     <a-avatar class="item" :size="60" src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
     <div class="item input-area ">
-      <a-input v-model="psw"  placeholder="解锁密码" />
+      <a-input v-model="psw"  placeholder="登录密码" />
     </div>
     <a-button class="item" @click="unlock">解锁</a-button>
   </div>
@@ -10,6 +10,7 @@
 
 <script>
   import {mousedown, mouseup} from "../../renderer-process/renderer-process";
+  import {mapState} from "vuex";
 
   export default {
     name: "Lock",
@@ -19,11 +20,23 @@
       }
     },
     mounted() {
-
+    },
+    computed: {
+      ...mapState({
+        userInfo: state => state.user.userInfo,
+      }),
     },
     methods: {
       unlock(){
-        this.$router.go(-1)
+        if(!this.psw){
+          this.$message.error('请输入密码 ！');
+          return
+        }
+        if(this.psw == this.userInfo.psw){
+          this.$router.go(-1)
+        }else{
+          this.$message.error('密码错误 ！');
+        }
       },
       mouseup,
       mousedown:(e)=>mousedown(e),

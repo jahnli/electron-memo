@@ -37,9 +37,11 @@
       }
     },
     mounted() {
+      this.$electron.ipcRenderer.on('resetSize',(event,args)=> this.resetSize());
       this.$bus.$on('remindCount',(count = 0)=>{
         this.remindCount = count;
       })
+
     },
     methods: {
       // 锁定
