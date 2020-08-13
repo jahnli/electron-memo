@@ -3,4 +3,6 @@ export default {
   updateApi:`/memos/update`,
   deleteApi:`/memos/delete`,
   getApi:`/memos/get`,
+  updateRemindApi:`/memos/updateRemind`,
+  getRemindApi:`/memos/getRemind`,
 }

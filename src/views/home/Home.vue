@@ -173,6 +173,19 @@
       this.clearTimeout();
     },
     methods: {
+      // 获取提醒
+      async getRemind(){
+        try {
+          let params = {
+            pid: this.userInfo.userName
+          };
+          let {data:res} = await this.$axios.post(this.$memos.getRemindApi,params);
+          this.remindList = res.data;
+          this.$bus.$emit('remindCount',this.remindList.length)
+        }catch (e) {
+          console.log(e);
+        }
+      },
       // 通知
       notification() {
         this.clearTimeout();
@@ -186,12 +199,21 @@
               this.$electron.remote.BrowserWindow.fromId(1).show();
               this.drawerVisible = true;
               this.remindData = item;
-              this.remindList.push(item);
-              this.$bus.$emit('remindCount',this.remindList.length)
+              // 更新提醒
+              this.updateRemind(item);
+              this.getRemind();
             }, +item.remindTime - +new Date());
           }
         })
-        this.$bus.$emit('remindCount',this.remindList.length)
+      },
+      // 更新提醒
+      async updateRemind(item){
+        try {
+          let {data:res} = await this.$axios.patch(this.$memos.updateRemindApi,{...item,remind:true})
+          console.log(res);
+        }catch (e) {
+
+        }
       },
       // 提醒
       monitor(){
@@ -233,7 +255,6 @@
         for (const timersKey in this.timers) {
           clearTimeout(this.timers[timersKey]);
         }
-        this.remindList = [];
         this.currentRemindIndex = 0;
         this.timers = {};
       },
@@ -266,6 +287,7 @@
               }
             }
             this.list = res.data;
+            this.getRemind();
             this.notification();
           } else {
             this.$apiMessage(res.msg, res.code);
