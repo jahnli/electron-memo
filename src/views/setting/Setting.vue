@@ -26,7 +26,6 @@
 
 <script>
   import About from './About.vue';
-  const fs = window.require('fs');
   export default {
     name: "setting",
     data() {
@@ -36,31 +35,17 @@
       }
     },
     mounted() {
-      this.readConfig();
+      this.getSetting()
     },
     methods: {
-      // 读取配置
-      readConfig(){
-        try {
-          let json = fs.readFileSync('config.json');
-          let res = JSON.parse(json);
-          this.restart = res.restart;
-        } catch (e) {
-          console.log(e);
-        }
+      // 获取设置
+      getSetting(){
+        let res = this.$electron.remote.app.getLoginItemSettings();
+        this.restart = res.openAtLogin;
       },
       // 开机启动
       autoStartHandle(e){
         this.$electron.ipcRenderer.send('autoStart',e.target.checked);
-        try {
-          let config = fs.readFileSync('config.json');
-          if(config){
-            let res  = JSON.parse(config);
-            fs.writeFile('config.json',JSON.stringify({...res,restart:e.target.checked}),err=>{})
-          }
-        }catch (e){
-
-        }
       }
     },
     components:{About}
