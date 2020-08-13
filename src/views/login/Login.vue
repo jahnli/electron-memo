@@ -65,11 +65,9 @@
     },
     created() {
       this.resetSize();
+      this.readConfig();
     },
     mounted() {
-      this.$nextTick(()=>{
-        this.readConfig();
-      })
     },
     methods: {
       // 读取配置
