@@ -34,7 +34,12 @@ app.whenReady().then(() => {
           },
           {label: '设置'},
           {type:'separator'},
-          {label: '最小化'},
+          {
+            label: '最小化',
+            click:()=>{
+              win.hide();
+            }
+          },
           {
             label: '退出登录',
             click:()=>{
