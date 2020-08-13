@@ -1,5 +1,6 @@
 <template>
   <div class='Home'>
+    <audio ref="audio"  :src="audioUrl"></audio>
     <a-list
             class="memo-list"
             :data-source="list"
@@ -128,6 +129,7 @@
 <script>
   import {mapState} from 'vuex';
   import moment from "moment";
+  const fs = window.require('fs');
   export default {
     name: "Home",
     data() {
@@ -158,13 +160,16 @@
         // 提醒
         drawerVisible:false,
         remindList:[],
+        remindData:{},
         currentRemindIndex:0,
-        remindData:{}
+        // 声音
+        audioUrl:''
       }
     },
     created() {
       this.getData();
       this.resetSize();
+      this.getSetting();
     },
     mounted() {
       this.monitor()
@@ -173,6 +178,17 @@
       this.clearTimeout();
     },
     methods: {
+      // 获取本地设置
+      // TODO:更改全局状态
+      // getSetting(){
+      //   fs.readFile('config.json', (err, data) => {
+      //     let config = JSON.parse(data);
+      //     if(config.audio){
+      //       let source = require(`../../assets/audio/${config.audio}.mp3`);
+      //       this.audioUrl = source;
+      //     }
+      //   });
+      // },
       // 获取提醒
       async getRemind(){
         try {
@@ -197,6 +213,7 @@
               this.$electron.remote.BrowserWindow.fromId(1).show();
               this.drawerVisible = true;
               this.remindData = item;
+              this.$refs.audio.play();
               // 更新提醒
               this.updateRemind(item);
               this.getRemind();

@@ -175,7 +175,7 @@
       // 创建配置文件
       createConfig(userName,psw){
         let params = {
-          userName,psw,type:this.loginForm.type
+          userName,psw,type:this.loginForm.type,audio:'katong'
         }
         fs.writeFile('config.json',JSON.stringify(params),err=>{
         })
