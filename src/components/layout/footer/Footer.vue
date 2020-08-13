@@ -153,6 +153,7 @@
         } else {
           this[field].loadURL(`app://./index.html#/${routerPath}`)
         }
+        this[field].openDevTools();
         this[field].on('closed', () => {
           this[field] = null
         })
