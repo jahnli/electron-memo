@@ -147,8 +147,12 @@
         };
         this[field] = new BrowserWindow({...options,...args});
         this[field].setMenu(null);
-        this[field].loadURL(`http://localhost:8080/#/${routerPath}`)
-        // this[field].openDevTools();
+        if (process.env.NODE_ENV !== 'production') {
+          this[field].loadURL(`http://localhost:8080/#/${routerPath}`)
+          this[field].openDevTools();
+        } else {
+          this[field].loadURL(`app://./index.html#/${routerPath}`)
+        }
         this[field].on('closed', () => {
           this[field] = null
         })
