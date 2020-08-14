@@ -126,6 +126,7 @@
       toggleStatus(){
         this.isLogin = !this.isLogin;
         this.loginForm = {};
+        this.$refs.ruleForm.clearValidate();
         this.readConfig()
       },
       // 登录

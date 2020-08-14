@@ -47,6 +47,7 @@
         fs.readFile('config.json', (err, data) => {
           let config = JSON.parse(data);
           fs.writeFile('config.json',JSON.stringify({...config,audio:this.audio}), (err) => {
+            this.$electron.ipcRenderer.send('getSetting')
             if (err) throw err;
           });
         });

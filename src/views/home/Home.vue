@@ -172,23 +172,24 @@
       this.getSetting();
     },
     mounted() {
-      this.monitor()
+      this.monitor();
+      // 更改音效
+      this.$electron.ipcRenderer.on('getSetting',(event,args)=>this.getSetting())
     },
     destroyed() {
       this.clearTimeout();
     },
     methods: {
       // 获取本地设置
-      // TODO:更改全局状态
-      // getSetting(){
-      //   fs.readFile('config.json', (err, data) => {
-      //     let config = JSON.parse(data);
-      //     if(config.audio){
-      //       let source = require(`../../assets/audio/${config.audio}.mp3`);
-      //       this.audioUrl = source;
-      //     }
-      //   });
-      // },
+      getSetting(){
+        fs.readFile('config.json', (err, data) => {
+          let config = JSON.parse(data);
+          if(config.audio){
+            let source = require(`../../assets/audio/${config.audio}.mp3`);
+            this.audioUrl = source;
+          }
+        });
+      },
       // 获取提醒
       async getRemind(){
         try {

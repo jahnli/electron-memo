@@ -16,7 +16,10 @@ app.whenReady().then(() => {
       openAtLogin: args
     })
   });
-
+  // 更改音效
+  ipcMain.on('getSetting', (event, arg) => {
+    mainWin.webContents.send('getSetting', );
+  });
 
   // 拖拽
   require('./darg');
