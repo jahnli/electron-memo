@@ -47,13 +47,19 @@
 
 <style lang="less">
   .Tools {
+    height: calc(~'100% - 37px');
     .list-area{
-      padding: 0 20px;
-      .flex(space-between,center);
-      margin-top: 30px;
+      height: 100%;
+      overflow: auto;
+      padding: 20px 20px 0 20px;
+      display: flex;
+      justify-content: space-around;
+      .base-scroll-bar(8px,0);
+      flex-wrap: wrap;
       .ant-card{
-        width: 33%;
-        margin-right: 20px;
+        width:45%;
+        height: 143px;
+        margin-bottom: 20px;
       }
     }
   }
