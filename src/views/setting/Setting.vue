@@ -8,10 +8,6 @@
       <a-tab-pane key="1" tab="通用设置">
         <h2>基本设置</h2>
         <div class="item"><a-checkbox v-model="restart" @change="autoStartHandle">开机启动</a-checkbox></div>
-        <p class="label">默认字体：</p>
-        <a-select default-value="lucy" style="width: 140px" >
-          <a-select-option value="jack">Jack</a-select-option>
-        </a-select>
         <p class="label">声音提醒：</p>
         <a-select v-model="audio" @change="audioChange" style="width: 140px" >
           <a-select-option value="katong">卡通（默认）</a-select-option>
@@ -35,7 +31,7 @@
       return {
         currentTab:'1',
         restart:null,
-        audio:'katong'
+        audio:'katong',
       }
     },
     created() {

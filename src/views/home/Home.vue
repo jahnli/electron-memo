@@ -226,7 +226,6 @@
       async updateRemind(item){
         try {
           let {data:res} = await this.$axios.patch(this.$memos.updateRemindApi,{...item,remind:true})
-          console.log(res);
         }catch (e) {
 
         }
