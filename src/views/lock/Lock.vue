@@ -1,8 +1,8 @@
 <template>
   <div class='Lock'  @mousedown="mousedown" @mouseup="mouseup">
-    <a-avatar class="item" :size="60" src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
+    <a-avatar icon="user" :size="60"/>
     <div class="item input-area ">
-      <a-input v-model="psw"  placeholder="登录密码" />
+      <a-input v-model="psw"@keyup.enter="unlock"  placeholder="登录密码" />
     </div>
     <a-button class="item" @click="unlock">解锁</a-button>
   </div>

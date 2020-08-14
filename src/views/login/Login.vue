@@ -16,7 +16,7 @@
               </a-input>
             </a-form-model-item>
           <a-form-model-item  prop="psw" class="no-drag" >
-            <a-input-password placeholder="密码" v-model="loginForm.psw" >
+            <a-input-password @keyup.enter="isLogin ? loginHandle():registerHandle()" placeholder="密码" v-model="loginForm.psw" >
               <a-icon type="edit" slot="prefix" />
             </a-input-password>
           </a-form-model-item>
