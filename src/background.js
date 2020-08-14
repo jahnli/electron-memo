@@ -28,7 +28,7 @@ function createWindow() {
       nodeIntegration: true
     }
   })
-  win.openDevTools();
+  // win.openDevTools();
   require('./main-process/ipcMain');
   require('./main-process/tray');
 
