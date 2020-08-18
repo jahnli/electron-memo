@@ -1,6 +1,7 @@
 const {app,Menu, BrowserWindow ,Tray,ipcMain ,MenuItem}  = require('electron')
 const path = require('path');
 const fs = require('fs');
+const os = require('os');
 let tray;
 app.whenReady().then(() => {
   const win  = BrowserWindow.getFocusedWindow();
@@ -45,11 +46,12 @@ app.whenReady().then(() => {
             click:()=>{
               win.webContents.send('routerSkip','login');
               try {
-                let config = fs.readFileSync('config.json');
+                let configPath = path.join(os.homedir(),"/AppData/Local/", 'config.json');
+                let config = fs.readFileSync(configPath);
                 if(config){
                   let res  = JSON.parse(config);
                   let type = res.type.length >= 1 ? ['1']:[]
-                  fs.writeFile('config.json',JSON.stringify({...res,type}),err=>{})
+                  fs.writeFile(configPath,JSON.stringify({...res,type}),err=>{})
                 }
               }catch (e) {
                 console.log(e);

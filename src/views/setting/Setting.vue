@@ -25,6 +25,8 @@
 <script>
   import About from './About.vue';
   const fs = window.require('fs');
+  const path = window.require('path');
+  const os = window.require('os');
   export default {
     name: "setting",
     data() {
@@ -40,9 +42,10 @@
     methods: {
       // 声音切换
       audioChange(e){
-        fs.readFile('config.json', (err, data) => {
+        let configPath = path.join(os.homedir(),"/AppData/Local/", 'config.json');
+        fs.readFile(configPath, (err, data) => {
           let config = JSON.parse(data);
-          fs.writeFile('config.json',JSON.stringify({...config,audio:this.audio}), (err) => {
+          fs.writeFile(configPath,JSON.stringify({...config,audio:this.audio}), (err) => {
             this.$electron.ipcRenderer.send('getSetting')
             if (err) throw err;
           });
@@ -52,7 +55,8 @@
       getSetting(){
         let res = this.$electron.remote.app.getLoginItemSettings();
         this.restart = res.openAtLogin;
-        fs.readFile('config.json', (err, data) => {
+        let configPath = path.join(os.homedir(),"/AppData/Local/", 'config.json');
+        fs.readFile(configPath, (err, data) => {
           let config = JSON.parse(data);
           if(config.audio){
             this.audio = config.audio;

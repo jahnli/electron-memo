@@ -130,6 +130,8 @@
   import {mapState} from 'vuex';
   import moment from "moment";
   const fs = window.require('fs');
+  const path = window.require('path');
+  const os = window.require('os');
   export default {
     name: "Home",
     data() {
@@ -182,7 +184,8 @@
     methods: {
       // 获取本地设置
       getSetting(){
-        fs.readFile('config.json', (err, data) => {
+        let configPath = path.join(os.homedir(),"/AppData/Local/", 'config.json');
+        fs.readFile(configPath, (err, data) => {
           let config = JSON.parse(data);
           if(config.audio){
             let source = require(`../../assets/audio/${config.audio}.mp3`);

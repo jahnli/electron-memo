@@ -37,6 +37,8 @@
 </template>
 
 <script>
+  const os = window.require('os');
+  const path = window.require('path');
   const fs = window.require('fs');
   import {mouseup,mousedown} from "../../renderer-process/renderer-process";
   import BaseIcon from '@/components/icon/icon'
@@ -65,25 +67,25 @@
     },
     created() {
       this.resetSize();
-      this.readConfig();
     },
     mounted() {
+      this.readConfig();
     },
     methods: {
       // 读取配置
       readConfig(){
-        try {
-          let json = fs.readFileSync('config.json');
-          let res = JSON.parse(json);
+        let configPath = path.join(os.homedir(),"/AppData/Local/", 'config.json');
+        fs.readFile(configPath,(err,data)=>{
+          console.log(err, data);
+          if(err) return ;
+          let res = JSON.parse(data);
           if(res.type.length){
             this.loginForm = res;
             if(this.loginForm.type.includes('2')){
               this.loginSubmit();
             }
           }
-        } catch (e) {
-          console.log(e);
-        }
+        })
       },
       // 更改状态
       checkboxChange(e){
@@ -179,7 +181,8 @@
         let params = {
           userName,psw,type:this.loginForm.type,audio:'katong'
         }
-        fs.writeFile('config.json',JSON.stringify(params),err=>{
+        let configPath = path.join(os.homedir(),"/AppData/Local/", 'config.json');
+        fs.writeFile(configPath,JSON.stringify(params),err=>{
         })
       },
       // 重置窗口
